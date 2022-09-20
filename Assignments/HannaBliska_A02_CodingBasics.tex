@@ -1,0 +1,321 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.54cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Assignment 2: Coding Basics},
+  pdfauthor={Hanna Bliska},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Assignment 2: Coding Basics}
+\author{Hanna Bliska}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{overview}{%
+\subsection{OVERVIEW}\label{overview}}
+
+This exercise accompanies the lessons in Environmental Data Analytics on
+coding basics.
+
+\hypertarget{directions}{%
+\subsection{Directions}\label{directions}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Rename this file
+  \texttt{\textless{}FirstLast\textgreater{}\_A02\_CodingBasics.Rmd}
+  (replacing \texttt{\textless{}FirstLast\textgreater{}} with your first
+  and last name).
+\item
+  Change ``Student Name'' on line 3 (above) with your name.
+\item
+  Work through the steps, \textbf{creating code and output} that fulfill
+  each instruction.
+\item
+  Be sure to \textbf{answer the questions} in this assignment document.
+\item
+  When you have completed the assignment, \textbf{Knit} the text and
+  code into a single PDF file.
+\item
+  After Knitting, submit the completed exercise (PDF file) to Sakai.
+\end{enumerate}
+
+\hypertarget{basics-day-1}{%
+\subsection{Basics Day 1}\label{basics-day-1}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Generate a sequence of numbers from one to 100, increasing by fours.
+  Assign this sequence a name.
+\item
+  Compute the mean and median of this sequence.
+\item
+  Ask R to determine whether the mean is greater than the median.
+\item
+  Insert comments in your code to describe what you are doing.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#1. }
+\NormalTok{seq\_by\_four }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{100}\NormalTok{, }\DecValTok{4}\NormalTok{) }\CommentTok{\#from one, to one hundred, by fours}
+\NormalTok{seq\_by\_four}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  1  5  9 13 17 21 25 29 33 37 41 45 49 53 57 61 65 69 73 77 81 85 89 93 97
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#2. }
+\FunctionTok{mean}\NormalTok{(seq\_by\_four) }\CommentTok{\#calculate mean of seq\_by\_four}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 49
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{median}\NormalTok{(seq\_by\_four) }\CommentTok{\#calculate median of seq\_by\_four}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 49
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#3. }
+\FunctionTok{mean}\NormalTok{(seq\_by\_four) }\SpecialCharTok{\textgreater{}} \FunctionTok{median}\NormalTok{(seq\_by\_four) }\CommentTok{\#asking R if the mean \textgreater{} median}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#output will return TRUE or FALSE}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{basics-day-2}{%
+\subsection{Basics Day 2}\label{basics-day-2}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\item
+  Create a series of vectors, each with four components, consisting of
+  (a) names of students, (b) test scores out of a total 100 points, and
+  (c) whether or not they have passed the test (TRUE or FALSE) with a
+  passing grade of 50.
+\item
+  Label each vector with a comment on what type of vector it is.
+\item
+  Combine each of the vectors into a data frame. Assign the data frame
+  an informative name.
+\item
+  Label the columns of your data frame with informative titles.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{student\_names }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Hanna"}\NormalTok{, }\StringTok{"Caroline"}\NormalTok{, }\StringTok{"Isaac"}\NormalTok{, }\StringTok{"Sam"}\NormalTok{) }
+\CommentTok{\#this vector consists of characters}
+\NormalTok{test\_scores }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{48}\NormalTok{, }\DecValTok{90}\NormalTok{, }\DecValTok{38}\NormalTok{, }\DecValTok{95}\NormalTok{) }
+\CommentTok{\#this vector consists of numbers}
+\NormalTok{passing\_scores }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\ConstantTok{FALSE}\NormalTok{, }\ConstantTok{TRUE}\NormalTok{, }\ConstantTok{FALSE}\NormalTok{, }\ConstantTok{TRUE}\NormalTok{) }
+\CommentTok{\#this vector consists of logical elements}
+
+\NormalTok{df\_student\_names }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(student\_names) }
+\CommentTok{\#start by turning one vector into a data frame}
+\NormalTok{df\_student\_scores }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(df\_student\_names, test\_scores, passing\_scores) }
+\CommentTok{\#add columns to the data frame to create a single data frame with all vectors}
+
+\FunctionTok{colnames}\NormalTok{(df\_student\_scores) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"student.first.name"}\NormalTok{, }\StringTok{"test.scores.numeric"}\NormalTok{, }\StringTok{"test.scores.passing"}\NormalTok{) }
+\CommentTok{\#renaming columns more informative names}
+\NormalTok{df\_student\_scores}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   student.first.name test.scores.numeric test.scores.passing
+## 1              Hanna                  48               FALSE
+## 2           Caroline                  90                TRUE
+## 3              Isaac                  38               FALSE
+## 4                Sam                  95                TRUE
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{8}
+\tightlist
+\item
+  QUESTION: How is this data frame different from a matrix?
+\end{enumerate}
+
+\begin{quote}
+Answer: This data frame includes elements from different classes
+(characters, numbers, logical elements). A matrix would include elements
+from the same class (e.g., only numbers).
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{9}
+\item
+  Create a function with an if/else statement. Your function should take
+  a \textbf{vector} of test scores and print (not return) whether a
+  given test score is a passing grade of 50 or above (TRUE or FALSE).
+  You will need to choose either the \texttt{if} and \texttt{else}
+  statements or the \texttt{ifelse} statement.
+\item
+  Apply your function to the vector with test scores that you created in
+  number 5.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{check\_students\_pass }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(test\_scores) \{}
+  \FunctionTok{ifelse}\NormalTok{(test\_scores}\SpecialCharTok{\textgreater{}=}\DecValTok{50}\NormalTok{,}\ConstantTok{TRUE}\NormalTok{,}\ConstantTok{FALSE}\NormalTok{) }\CommentTok{\#log\_exp, if TRUE, if false}
+\NormalTok{\}}
+\CommentTok{\#check\_students\_pass return TRUE if the test score \textgreater{} 50, FALSE if \textless{} 50}
+
+\NormalTok{did\_my\_students\_pass }\OtherTok{\textless{}{-}}\FunctionTok{check\_students\_pass}\NormalTok{(test\_scores) }
+\CommentTok{\#using function check\_students\_pass on my test\_scores}
+\NormalTok{did\_my\_students\_pass }\CommentTok{\#output}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE  TRUE FALSE  TRUE
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{11}
+\tightlist
+\item
+  QUESTION: Which option of \texttt{if} and \texttt{else}
+  vs.~\texttt{ifelse} worked? Why?
+\end{enumerate}
+
+\begin{quote}
+Answer: When I tried to use the \texttt{if} and \texttt{else} option, I
+received an error that stated the condition has a length greater than 1.
+This is because I was asking \texttt{if} and \texttt{else} to evaluate
+all of the test scores in my vector, not a single test score. When I
+used \texttt{ifselse} I was able to evaluate all of the test scores in
+my vector. This is because \texttt{ifelse} can evaluate vectors.
+\end{quote}
+
+\end{document}
