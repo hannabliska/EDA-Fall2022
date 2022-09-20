@@ -88,7 +88,7 @@ class (e.g., only numbers).
 check_students_pass <- function(test_scores) {
   ifelse(test_scores>=50,TRUE,FALSE) #log_exp, if TRUE, if false
 }
-#check_students_pass return TRUE if the test score > 50, FALSE if < 50
+#check_students_pass return TRUE if the test score >= 50, FALSE if < 50
 
 did_my_students_pass <-check_students_pass(test_scores) 
 #using function check_students_pass on my test_scores
