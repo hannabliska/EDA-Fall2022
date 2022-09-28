@@ -30,6 +30,9 @@ setwd("~/Desktop/EDA-Fall2022")
 getwd()
 #install.packages(tidyverse)
 library(tidyverse)
+#install.packages('formatR')
+library(formatR)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
 #neonics dataset
 Neonics <- read.csv("./Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE)
 #litter dataset
@@ -84,22 +87,24 @@ summary(Neonics$Species.Common.Name)
 class(Neonics$Conc.1..Author.)
 ```
 
-> Answer: The class of Conc.1..Author is factor. The reason that R is recognizing this column as a factor column is because the data in this column are not continuous, numerical values. Rather, there are ranges of data (e.g., <1.5) and approximations (e.g., ~41) recorded. These values cannot be considered continuous, rather, they are categorical observations. I hypothesize that some of the concentrations were recorded in this manner due to the difficulty of detecting concentrations of chemicals from a laboratory science perspective; it may be the case that the equipment used could not detect a precise numeric value from a given sample, and thus ranges or approximations were recorded.
+> Answer: The class of Conc.1..Author is factor. R is recognizing the data in this column as factors because some of the observations have characters and are not solely numerical values. There are ranges of data (e.g., <1.5) and approximations (e.g., ~41) recorded, which are not continuous numerical values and have characters. R recognizes the characters in this column and treats the entire column as characters. Since we have used the stringsAsFactors command, R is listing this column of characters as factors. I hypothesize that some of the concentrations were recorded in this manner due to the difficulty of detecting concentrations of chemicals from a laboratory science perspective; it may be the case that the equipment used could not detect a precise numeric value from a given sample, and thus ranges or approximations were recorded.
 
 ## Explore your data graphically (Neonics)
 
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
 ```{r, fig.height = 4, fig.width = 4}
-ggplot(Neonics) +
+Pub.Year.FreqPoly <-ggplot(Neonics) +
   geom_freqpoly(aes(x = Publication.Year), bins=20, color="green")
+Pub.Year.FreqPoly
 ```
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
 ```{r, fig.height = 8, fig.width = 8}
-ggplot(Neonics) +
+Location.Year.FreqPoly <- ggplot(Neonics) +
   geom_freqpoly(aes(x = Publication.Year, color = Test.Location), bins = 20)
+Location.Year.FreqPoly
 ```
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
@@ -109,9 +114,10 @@ Interpret this graph. What are the most common test locations, and do they diffe
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
 ```{r}
-ggplot(Neonics, aes(x = Endpoint)) +
+Endpoints.barchart <- ggplot(Neonics, aes(x = Endpoint)) +
   geom_bar() +
-  theme(axis.text.x = element_text(size = 3))
+  theme(axis.text = element_text(size = 3))
+Endpoints.barchart
 ```
 
 > Answer: The two most common endpoints are LOEL and NOEL. According to ECOTOX_CodeAppendix, LOEL is defined for terrestrial samples as the lowest-observable effect level, meaning it is the lowest concentration or dose of chemicals that produced effects that were significantly different from reponses of control samples. NOEL is defined for terrestrial samples as the no-observable effect level, meaning it is the highest concentration or dose of chemicals that produces effects not statistically significantly different from responses of control samples. 
@@ -145,20 +151,23 @@ unique(Litter$plotID)
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
 ```{r, fig.height=8, fig.width=8}
-ggplot(Litter, aes(x = functionalGroup)) +
+Litter.Barchart <- ggplot(Litter, aes(x = functionalGroup)) +
   geom_bar()
+Litter.Barchart
 ```
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of dryMass by functionalGroup.
 
 ```{r, fig.height=8, fig.width=8}
 #Creating a boxplot
-ggplot(Litter) +
+DryMass.Func.Box <- ggplot(Litter) +
   geom_boxplot(aes(x = functionalGroup, y = dryMass))
+DryMass.Func.Box
 
 #Creating a violin plot
-ggplot(Litter) +
+DryMass.Func.Violin <- ggplot(Litter) +
   geom_violin(aes(x = functionalGroup, y = dryMass))
+DryMass.Func.Violin
 ```
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
