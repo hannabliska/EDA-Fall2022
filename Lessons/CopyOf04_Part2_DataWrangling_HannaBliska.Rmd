@@ -137,7 +137,7 @@ write.csv(NTL.phys.nutrient.data.PeterPaul, row.names = FALSE,
 
 ### rbind
 
-The Niwot Ridge litter dataset, when downloaded from NEON, comes packaged with each month as a different .csv file. If we want to analyze the dataset as a single data frame, we need to combine each of these files. #Binding datasets by rows. Sometimes you will find a cvs per month or year. Important to combine into one. We could have one line of code for each cvs files 
+The Niwot Ridge litter dataset, when downloaded from NEON, comes packaged with each month as a different .csv file. If we want to analyze the dataset as a single data frame, we need to combine each of these files. #Binding datasets by rows. Sometimes you will find a cvs per month or year. Important to combine into one. We could have one line of code for each cvs files
 
 ```{r}
 Litter.June2016 <- read.csv("./Data/Raw/NIWO_Litter/NEON_NIWO_Litter_massdata_2016-06_raw.csv")
