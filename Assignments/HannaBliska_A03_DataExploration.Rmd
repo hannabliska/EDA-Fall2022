@@ -104,7 +104,7 @@ ggplot(Neonics) +
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer: The most common test locations are lab settings and natural field studies. The graph indicates that lab settings became much more common test locations for studies in our data set after 2010, reaching a maximum around 2014 with arppoximately 550 publications. Natural field studies, in comparison, were most common in studies in our dataset prior to 2010, reaching a maximum of approximately 350 studies between 2009-2010. This graph suggests that the studies referenced in our dataset reflected potential trends in test locations for exotoxicological studies, with lab settings becoming more common in recent years. However, after 2015 both lab settings and natural field studies exhibited a sharp decline in our dataset; this could suggest  overall less observations in our dataset of sources from this time or that these test locations are decreasing in use.
+> Answer: The most common test locations are lab settings and natural field studies. The graph indicates that lab settings became much more common test locations for studies in our data set after 2010, reaching a maximum around 2014 with arppoximately 550 publications. Natural field studies, in comparison, were most common in studies in our dataset prior to 2010, reaching a maximum of approximately 350 studies between 2009-2010. This graph suggests that the studies referenced in our dataset reflect trends in test locations for exotoxicological studies, with lab settings becoming more common in recent years. However, after 2015, both lab settings and natural field studies exhibited a sharp decline in our dataset; this could suggest that we have  less observations in our dataset of sources from 2015-2020, or that these test locations are becoming less utilized in the literature.
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
@@ -127,6 +127,7 @@ Litter$collectDate <- as.Date(Litter$collectDate, format = "%Y-%m-%d")
 #Check class
 class(Litter$collectDate)
 #Determine dates of litter sampled in August 2018
+unique(Litter$collectDate)
 ```
 
 13. Using the `unique` function, determine how many plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
@@ -138,7 +139,7 @@ unique(Litter$plotID)
 #summary(Litter$plotID)
 ```
 
-> Answer: 12 unique plots were sampled at Niwot Ridge. Summary reports the frequency of samples taken at each plot (for example, Plot NIWO_040 was sampled 20 times.) Unique reports the number of unique plots and their IDs, which allows the user to quickly determine unique values without reading information regarding duplicates.
+> Answer: 12 unique plots were sampled at Niwot Ridge. `Summary` reports the frequency of samples taken at each plot (for example, Plot NIWO_040 was sampled 20 times.) `Unique` reports the number of unique plots and their IDs, which allows the user to quickly determine unique values without reading information pertaining to duplicates.
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
@@ -161,7 +162,7 @@ ggplot(Litter) +
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
 
-> Answer: The boxplot produced here effectively visualizes important summary statistics, for example, the median and interquartile range, for this dataset. A violin plot is not helpful for visualizing these data because the functional groups either have very long distributions for measurements of dry mass or very short distributions. Violin plots are most useful for visualizing patterns in distributions of the data; for example, if many of the data were clustered around the median, or minima/maxima. Since this is not the case, the violin plots produce straight long and short lines, and no useful information is gleaned from the chart. 
+> Answer: The boxplot produced here effectively visualizes important summary statistics (e.g., the median and interquartile range) for this dataset. A violin plot is not helpful for visualizing these data because the functional groups either have very long distributions for measurements of dry mass or very short distributions. Violin plots are most useful for visualizing patterns in distributions of the data; for example, if many of the data were clustered around the median, or minima/maxima. Since this is not the case, the violin plots produce straight long and short lines, and no useful information is gleaned from the chart. 
 
 What type(s) of litter tend to have the highest biomass at these sites?
 
