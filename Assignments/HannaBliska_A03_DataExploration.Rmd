@@ -76,7 +76,7 @@ summary(Neonics$Effect)
 summary(Neonics$Species.Common.Name)
 ```
 
-> Answer: The six most commonly studied species in the dataset are honey bees, parasitic wasps, buff tailed bumblebees, Carniolan honey bees, bumble bees, and Italian honeybees. Honey bees and bumblebees are both vital pollinators of agricultural crops and flowers.Thus, they may be of particular interest to those concerned with the health of agricultural systems.Honey bees also produce honey, which is an important resource consumed by people in the United States. Parasitic wasps do not play a large role in pollination like the other five species listed do; however, parasitic wasps do have a role in agricultural ecosystems because they prey upon agricultural pests and are thus considered to be biological control agents (Chen et al. 2018). Therefore, farmers and other agricultural stakeholders may be concerned with the health of parasitic wasp populations due to the important role they place in aiding agricultural production.
+> Answer: The six most commonly studied species in the dataset are honey bees, parasitic wasps, buff tailed bumblebees, Carniolan honey bees, bumble bees, and Italian honeybees. Honey bees and bumble bees are both vital pollinators of agricultural crops and flowers. Thus, they may be of particular interest to those concerned with the health of agricultural systems. Honey bees also produce honey, which is an important resource consumed by people in the United States. Parasitic wasps do not play a large role in pollination like the other five species listed do; however, parasitic wasps do have a role in agricultural ecosystems because they prey upon agricultural pests and are thus considered to be biological control agents (Chen et al. 2018). Therefore, farmers and other agricultural stakeholders may be concerned with the health of parasitic wasp populations due to the important role they place in aiding agricultural production.
 
 8.  Concentrations are always a numeric value. What is the class of Conc.1..Author. in the dataset, and why is it not numeric?
 
@@ -84,7 +84,7 @@ summary(Neonics$Species.Common.Name)
 class(Neonics$Conc.1..Author.)
 ```
 
-> Answer: The class of Conc.1..Author is factor. The reason that R is recognizing this column as a facto column is because the data in this column are not continuous, numerical values. Rather, there are ranges of data (e.g., <1.5) and approximations (e.g., ~41). These values cannot be considered continuous, rather, they are categorical observations. I hypothesize that some of the concentrations were recorded in this manner due to the difficulty of detecting concentrations of chemicals from a laboratory science perspective; it may be the case that the equipment used could not detect a precise numeric value from a given sample, and thus ranges or approximations were recorded. 
+> Answer: The class of Conc.1..Author is factor. The reason that R is recognizing this column as a factor column is because the data in this column are not continuous, numerical values. Rather, there are ranges of data (e.g., <1.5) and approximations (e.g., ~41) recorded. These values cannot be considered continuous, rather, they are categorical observations. I hypothesize that some of the concentrations were recorded in this manner due to the difficulty of detecting concentrations of chemicals from a laboratory science perspective; it may be the case that the equipment used could not detect a precise numeric value from a given sample, and thus ranges or approximations were recorded.
 
 ## Explore your data graphically (Neonics)
 
@@ -104,7 +104,7 @@ ggplot(Neonics) +
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer:The most common test locations are lab settings and natural field studies. The graph indicates that lab settings have become much more common test locations after 2010, whereas natural field studies were more common prior to 2010. 
+> Answer: The most common test locations are lab settings and natural field studies. The graph indicates that lab settings became much more common test locations for studies in our data set after 2010, reaching a maximum around 2014 with arppoximately 550 publications. Natural field studies, in comparison, were most common in studies in our dataset prior to 2010, reaching a maximum of approximately 350 studies between 2009-2010. This graph suggests that the studies referenced in our dataset reflected potential trends in test locations for exotoxicological studies, with lab settings becoming more common in recent years. However, after 2015 both lab settings and natural field studies exhibited a sharp decline in our dataset; this could suggest  overall less observations in our dataset of sources from this time or that these test locations are decreasing in use.
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
