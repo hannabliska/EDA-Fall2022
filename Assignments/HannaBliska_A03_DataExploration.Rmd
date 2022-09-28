@@ -104,7 +104,7 @@ ggplot(Neonics) +
 
 Interpret this graph. What are the most common test locations, and do they differ over time?
 
-> Answer: The most common test locations are lab settings and natural field studies. The graph indicates that lab settings became much more common test locations for studies in our data set after 2010, reaching a maximum around 2014 with arppoximately 550 publications. Natural field studies, in comparison, were most common in studies in our dataset prior to 2010, reaching a maximum of approximately 350 studies between 2009-2010. This graph suggests that the studies referenced in our dataset reflect trends in test locations for exotoxicological studies, with lab settings becoming more common in recent years. However, after 2015, both lab settings and natural field studies exhibited a sharp decline in our dataset; this could suggest that we have  less observations in our dataset of sources from 2015-2020, or that these test locations are becoming less utilized in the literature.
+> Answer: The most common test locations are lab settings and natural field studies. The graph indicates that lab settings became much more common test locations for studies in our data set after 2010, reaching a maximum around 2014 with approximately 550 publications. Natural field studies, in comparison, were most common in studies in our dataset prior to 2010, reaching a maximum of approximately 350 studies between 2009-2010. This graph suggests that the studies referenced in our dataset reflect trends in test locations for exotoxicological studies, with lab settings becoming more common in recent years. However, after 2015, both lab settings and natural field studies exhibited a sharp decline in our dataset; this could suggest that we have  less observations in our dataset of sources from 2015-2020, or that these test locations are becoming less utilized in the literature.
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
@@ -169,4 +169,4 @@ What type(s) of litter tend to have the highest biomass at these sites?
 > Answer: Needles and mixed litter tend to have the highest biomass at these sites.
 
 References:
-Chen L, Lang K, Bi S, Luo J, Liu F, Ye X, Xu J, He K, Li F, Ye G, Chen X. WaspBase: a genomic resource for the interactions among parasitic wasps, insect hosts and plants. Database (Oxford). 2018 Jan 1;2018:1-9. doi: 10.1093/database/bay081. PMID: 30219838; PMCID: PMC6146128.
+Chen L, Lang K, Bi S, Luo J, Liu F, Ye X, Xu J, He K, Li F, Ye G, Chen X. WaspBase: a genomic resource for the interactions among parasitic wasps, insect hosts and plants. Database (Oxford). 2018 Jan 1;2018:1-9. doi: 10.1093/database/bay081.
