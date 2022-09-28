@@ -108,9 +108,10 @@ Interpret this graph. What are the most common test locations, and do they diffe
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
-```{r, fig.height=20, fig.width=20}
+```{r}
 ggplot(Neonics, aes(x = Endpoint)) +
-  geom_bar()
+  geom_bar() +
+  theme(axis.text.x = element_text(size = 3))
 ```
 
 > Answer: The two most common endpoints are LOEL and NOEL. According to ECOTOX_CodeAppendix, LOEL is defined for terrestrial samples as the lowest-observable effect level, meaning it is the lowest concentration or dose of chemicals that produced effects that were significantly different from reponses of control samples. NOEL is defined for terrestrial samples as the no-observable effect level, meaning it is the highest concentration or dose of chemicals that produces effects not statistically significantly different from responses of control samples. 
