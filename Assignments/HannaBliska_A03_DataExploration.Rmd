@@ -97,7 +97,7 @@ ggplot(Neonics) +
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
-```{r, fig.height = 4, fig.width = 4}
+```{r, fig.height = 8, fig.width = 8}
 ggplot(Neonics) +
   geom_freqpoly(aes(x = Publication.Year, color = Test.Location), bins = 20)
 ```
@@ -108,7 +108,7 @@ Interpret this graph. What are the most common test locations, and do they diffe
 
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
-```{r, fig.height=10, fig.width=10}
+```{r, fig.height=20, fig.width=20}
 ggplot(Neonics, aes(x = Endpoint)) +
   geom_bar()
 ```
@@ -142,14 +142,14 @@ unique(Litter$plotID)
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
-```{r, fig.height=4, fig.width=4}
+```{r, fig.height=8, fig.width=8}
 ggplot(Litter, aes(x = functionalGroup)) +
   geom_bar()
 ```
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of dryMass by functionalGroup.
 
-```{r, fig.height=4, fig.width=4}
+```{r, fig.height=8, fig.width=8}
 #Creating a boxplot
 ggplot(Litter) +
   geom_boxplot(aes(x = functionalGroup, y = dryMass))
