@@ -137,9 +137,9 @@ print(PMplot.line) #time series plot
 lightvsDO <- 
   ggplot(PeterPaul.chem.nutrients, aes(x = irradianceWater, y = dissolvedOxygen)) +
   geom_point()
-print(lightvsDO)
+print(lightvsDO) #two variables, one on x and one on y, to tell relationship between them
 
-# Adjust axes
+# Adjust axes to give a zoom here on particular area that we are interested in 
 lightvsDOfixed <- 
   ggplot(PeterPaul.chem.nutrients, aes(x = irradianceWater, y = dissolvedOxygen)) +
   geom_point() +
@@ -152,15 +152,16 @@ tempvsdepth <-
   ggplot(PeterPaul.chem.nutrients, aes(x = temperature_C, y = depth)) +
   #ggplot(PeterPaul.chem.nutrients, aes(x = temperature_C, y = depth, color = daynum)) +
   geom_point() +
-  scale_y_reverse()
+  scale_y_reverse() #this allows us to put the deeper observations
 print(tempvsdepth)
 
-NvsP <-
+NvsP <- #two nutrients colored by depth (surface darker, lighter blue as down)
   ggplot(PeterPaul.chem.nutrients, aes(x = tp_ug, y = tn_ug, color = depth)) +
   geom_point() +
-  geom_smooth(method = lm) +
-  geom_abline(aes(slope = 16, intercept = 0))
+  geom_smooth(method = lm) + #linear line
+  geom_abline(aes(slope = 16, intercept = 0)) #plot a line you know the slope and intercept for
 print(NvsP)
+#hanna question: can you change the color scale so that its darker deeper?
 
 ```
 
@@ -169,18 +170,20 @@ A traditional way to display summary statistics of continuous variables is a bar
 
 What might be more effective ways to display the information? Navigate to the boxplots page in the Caveats section to explore further.
 
+Better than barcharts with error bars. Generate error bars for data set with box plots and violin plots.
+
 ```{r, fig.height = 3, fig.width = 4, warning = FALSE}
 # Box and whiskers plot
 Nutrientplot3 <-
   ggplot(PeterPaul.chem.nutrients.gathered, aes(x = lakename, y = concentration)) +
-  geom_boxplot(aes(color = nutrient)) # Why didn't we use "fill"?
+  geom_boxplot(aes(color = nutrient)) # Why didn't we use "fill"? color regards contour of shape, fill will change the fill of the boxplot
 print(Nutrientplot3)
 
 # Dot plot
 Nutrientplot4 <-
   ggplot(PeterPaul.chem.nutrients.gathered, aes(x = lakename, y = concentration)) +
   geom_dotplot(aes(color = nutrient, fill = nutrient), binaxis = "y", binwidth = 1, 
-               stackdir = "center", position = "dodge", dotsize = 2) #
+               stackdir = "center", position = "dodge", dotsize = 2) #stacking on center, on y, 
 print(Nutrientplot4)
 
 # Violin plot
