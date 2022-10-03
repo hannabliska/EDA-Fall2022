@@ -179,6 +179,8 @@ Nutrientplot3 <-
   geom_boxplot(aes(color = nutrient)) # Why didn't we use "fill"? color regards contour of shape, fill will change the fill of the boxplot
 print(Nutrientplot3)
 
+#boxplot is helpful for distribution of data, smaller amount of data
+
 # Dot plot
 Nutrientplot4 <-
   ggplot(PeterPaul.chem.nutrients.gathered, aes(x = lakename, y = concentration)) +
@@ -191,6 +193,9 @@ Nutrientplot5 <-
   ggplot(PeterPaul.chem.nutrients.gathered, aes(x = lakename, y = concentration)) +
   geom_violin(aes(color = nutrient)) #
 print(Nutrientplot5)
+
+#also helpful for distribution, more data
+#similar to box plots (but box only shows summary stats) but violin also shows density
 
 # Frequency polygons
 # Using a tidy dataset
@@ -208,8 +213,10 @@ Nutrientplot7 <-
   ggplot(PeterPaul.chem.nutrients.gathered) +
   geom_freqpoly(aes(x = concentration, color = nutrient))
 print(Nutrientplot7)
+#much better practice with the gathered dataset
 
 # Frequency polygons have the risk of becoming spaghetti plots. 
+#Hard to read with more than 5 groups
 # See <https://www.data-to-viz.com/caveat/spaghetti.html> for more info.
 
 # Ridgeline plot
