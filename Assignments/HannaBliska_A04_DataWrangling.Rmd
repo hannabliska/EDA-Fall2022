@@ -175,7 +175,7 @@ Summary.EPAair_03_PM25_NC1819 <-
 #12b
 Up.Summary.EPAair_03_PM25_NC1819 <-
   Summary.EPAair_03_PM25_NC1819 %>%
-  filter(mean.AQI.ozone!="NA"| mean.AQI.PM2.5!="NA") #removing NAs
+  filter(mean.AQI.ozone!="NA" | mean.AQI.PM2.5!="NA") #removing NAs
           
 #13
 dim(Up.Summary.EPAair_03_PM25_NC1819) #checking the dimensions
