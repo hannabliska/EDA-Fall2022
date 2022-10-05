@@ -89,7 +89,7 @@ EPAair.O3.2018$Date <- as.Date(EPAair.O3.2018$Date, format = "%m/%d/%Y")
 EPAair.O3.2019$Date <- as.Date(EPAair.O3.2019$Date, format = "%m/%d/%Y")
 EPAair.PM25.2018$Date <- as.Date(EPAair.PM25.2018$Date, format = "%m/%d/%Y")
 EPAair.PM25.2019$Date <- as.Date(EPAair.PM25.2019$Date, format = "%m/%d/%Y")
-#changing the date to a date
+#changing from character to date and formatting
 
 #4
 AQI.EPAair.O3.2018 <- select(EPAair.O3.2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC, COUNTY, SITE_LATITUDE, SITE_LONGITUDE)
@@ -184,4 +184,4 @@ dim(Up.Summary.EPAair_03_PM25_NC1819) #checking the dimensions
 
 14. Why did we use the function `drop_na` rather than `na.omit`?
 
-> Answer: We use the function `drop_na` to drop rows containing missing values in specified columns provided. If we were to use `na.omit` on our dataset, we would remove all NAs. Using `drop_na` allows us to only remove NAs in specified columns. 
+> Answer: We use the function `drop_na` to drop rows containing missing values in specified columns provided. If we were to use `na.omit` on our data frame, we would remove all NAs. In this case, using `na.omit` would yield the same data frame because the only columns with NAs in our data frame were O3 and PM2.5, but if that were not the case, using `drop_na` is better practice because it allow us to only remove NAs in specified columns.
