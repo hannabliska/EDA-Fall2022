@@ -16,7 +16,7 @@ geometry: margin=2.54cm
 #install.packages('knitr')
 library(formatR)
 library(knitr)
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
 knitr::opts_chunk$set(root.dir="~/Desktop/EDA-Fall2022")
 #used commands with format R and knitr to set format and working directory
 ```
@@ -165,7 +165,8 @@ EPAair_03_PM25_NC1819_Processed_Spread <- pivot_wider(EPAair_03_PM25_NC1819_Proc
 dim(EPAair_03_PM25_NC1819_Processed_Spread) #checked dimensions
 
 #11
-write.csv(EPAair_03_PM25_NC1819_Processed_Spread, row.names=FALSE, file="./Data/Processed/EPAair_O3_PM25_NC1819_Processed.csv") #saved processed file
+write.csv(EPAair_03_PM25_NC1819_Processed_Spread, row.names=FALSE, file="./Data/Processed/EPAair_O3_PM25_NC1819_Processed.csv") 
+#saved processed file
 
 ```
 
