@@ -104,10 +104,10 @@ AQI.EPAair.PM25.2019 <- select(EPAair.PM25.2019, Date, DAILY_AQI_VALUE, Site.Nam
 #used select to create four data frames with columns of interest.
 
 #5
-AQI.EPAair.PM25.2018 <- mutate(AQI.EPAair.PM25.2018, AQS_PARAMETER_DESC = "PM2.5")
-AQI.EPAair.PM25.2019 <- mutate(AQI.EPAair.PM25.2019, AQS_PARAMETER_DESC = "PM2.5")
+AQI.EPAair.PM25.2018$AQS_PARAMETER_DESC <- "PM2.5"
+AQI.EPAair.PM25.2019$AQS_PARAMETER_DESC <- "PM2.5"
 
-#used mutate to modify column AQS_PARAMETER_DESC to have PM2.5 in each row in the two PM2.5 data frames.
+#modified column AQS_PARAMETER_DESC to have PM2.5 in each row in the two PM2.5 data frames.
 
 #6
 write.csv(AQI.EPAair.O3.2018, row.names = FALSE, file= "./Data/Processed/EPAair_O3_NC2018_processed.csv")
