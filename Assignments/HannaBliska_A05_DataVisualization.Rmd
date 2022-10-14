@@ -42,7 +42,15 @@ the processed data file for the Niwot Ridge litter dataset (use the
 ```{r}
 #1 
 getwd()
+library(tidyverse)
+library(lubridate)
+library(cowplot)
+Peter.Paul.Nutrients.Chem <- read.csv("./Data/Processed/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv", stringsAsFactors = TRUE)
+Niwot.Litter <- read.csv("./Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv", stringsAsFactors = TRUE)
+
 #2 
+Peter.Paul.Nutrients.Chem$sampledate <- as.Date(Peter.Paul.Nutrients.Chem$sampledate, format = "%Y-%m-%d") #formatting date
+Niwot.Litter$collectDate <- as.Date(Niwot.Litter$collectDate, format = "%Y-%m-%d") #formatting date
 
 ```
 ## Define your theme
@@ -50,7 +58,7 @@ getwd()
 
 ```{r}
 #3
-
+mytheme <- theme_classic(base_size = 13) + theme(axis.text = element_text(color="black"), legend.position = "right") #building my theme from the classic theme with black text, size 13 text, and legend position to the right
 ```
 
 ## Create graphs
@@ -65,7 +73,15 @@ limits using `xlim()` and/or `ylim()`).
 
 ```{r}
 #4
-
+Plot_TotalP_Phosphate <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = po4, y = tp_ug)) +
+  geom_point(aes(color=lakename), size=1) +
+  xlim(0, 50) +
+  geom_smooth(method=lm, se = FALSE, color="black") +
+  ylab(expression("Total Phosphorus")) +
+  xlab(expression("Phosphate")) +
+  labs(color="Lake name") +
+  mytheme
+print(Plot_TotalP_Phosphate)
 ```
 
 
@@ -79,7 +95,34 @@ see <https://r-lang.com/month-abb-in-r-with-example>
 
 ```{r}
 #5
+Plot_Temp <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = month.abb[month], y = temperature_C)) +
+  geom_point(aes(color=lakename), size=1) +
+  ylab(expression("Temperature (C)")) +
+  xlab(expression("Month")) +
+  labs(color="Lake name") +
+  mytheme
+print(Plot_Temp)
 
+Plot_TP <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = month.abb[month], y = tp_ug)) +
+  geom_point(aes(color=lakename), size=1) +
+  ylab(expression("Total Phosphorus")) +
+  xlab(expression("Month")) +
+  labs(color="Lake name") +
+  mytheme
+print(Plot_TP)
+
+Plot_TN <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = month.abb[month], y = tn_ug)) +
+  geom_point(aes(color=lakename), size=1) +
+  ylab(expression("Total Nitrogen")) +
+  xlab(expression("Month")) +
+  labs(color="Lake name") +
+  mytheme
+print(Plot_TN)
+
+Plot_Temp_TP_TN <-
+  plot_grid(Plot_Temp, Plot_TP, Plot_TN, nrow = 3, align = 'h', rel_heights = c(10, 10)) +
+  mytheme
+print(Plot_Temp_TP_TN)
 ```
 
 Question: What do you observe about the variables of interest over seasons 
