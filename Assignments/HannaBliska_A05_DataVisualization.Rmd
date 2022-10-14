@@ -12,6 +12,7 @@ geometry: margin=2.54cm
 #install.packages('formatR')
 library(formatR)
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
+#Hanna to check color, units
 ```
 
 ## OVERVIEW
