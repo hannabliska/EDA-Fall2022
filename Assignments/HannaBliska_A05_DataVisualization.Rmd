@@ -59,7 +59,7 @@ Niwot.Litter$collectDate <- as.Date(Niwot.Litter$collectDate, format = "%Y-%m-%d
 
 ```{r}
 #3
-mytheme <- theme_classic(base_size = 13) + theme(axis.text = element_text(color="black"), legend.position = "right") #building my theme from the classic theme with black text, size 13 text, and legend position to the right
+mytheme <- theme_classic(base_size = 12) + theme(axis.text = element_text(color="black"), legend.position = "right") #building my theme from the classic theme with black text, size 13 text, and legend position to the right
 ```
 
 ## Create graphs
@@ -120,10 +120,21 @@ Plot_TN <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = month.abb[month], y = tn_ug
   mytheme
 print(Plot_TN)
 
+Lake_Name_Legend <- get_legend(Plot_TP + mytheme)
+
 Plot_Temp_TP_TN <-
-  plot_grid(Plot_Temp, Plot_TP, Plot_TN, nrow = 3, align = 'h', rel_heights = c(10, 10)) +
+  plot_grid(
+    Plot_Temp + theme(legend.position="none"), 
+    Plot_TP  + theme(legend.position="none"), 
+    Plot_TN  + theme(legend.position="none"), 
+            ncol=1, 
+            align = 'hv', 
+            rel_widths = c(10,10),
+            rel_heights = c(10,10))+
   mytheme
-print(Plot_Temp_TP_TN)
+
+Plot_Temp_TP_TN_Legend <- plot_grid(Plot_Temp_TP_TN, Lake_Name_Legend)
+print(Plot_Temp_TP_TN_Legend)
 ```
 
 Question: What do you observe about the variables of interest over seasons 
