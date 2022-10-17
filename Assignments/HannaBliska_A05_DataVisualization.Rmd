@@ -10,7 +10,7 @@ geometry: margin=2.54cm
 #For it to work, the "formatR" package needs to be installed
 
 #install.packages('formatR')
-#Hanna to check color, units, how to make the legend smaller
+#Hanna to check color, off of 0, units, how to make the legend smaller, month order
 ```
 
 ## OVERVIEW
