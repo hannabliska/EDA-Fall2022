@@ -109,8 +109,10 @@ see <https://r-lang.com/month-abb-in-r-with-example>
 ```{r, fig.height = 3, fig.width = 4, warning = FALSE}
 #5
 Plot_Temp <- ggplot(Peter.Paul.Nutrients.Chem, aes(
-  x = fct_inorder(month.abb[month]), y = temperature_C)) +
+  x = factor(month, levels=c(1:12)), y = temperature_C)) +
   geom_boxplot(aes(color=lakename), size=1) + #creating scatter plot
+  scale_x_discrete(labels=month.abb, drop=FALSE) +
+  #scale_x_discrete(labels=c("1"="Jan","2"="Feb", "5"="May", "6"="Jun", "7"="Jul", "8"="Aug","9"="Sep", "10"="Oct", "11"="Nov")) +
   ylab(expression("Temperature (C)")) + #setting y axis label
   xlab(expression("Month")) + #setting x axis label
   labs(color="Lake name") + #setting legend label
@@ -118,8 +120,9 @@ Plot_Temp <- ggplot(Peter.Paul.Nutrients.Chem, aes(
 print(Plot_Temp)
 
 Plot_TP <- ggplot(Peter.Paul.Nutrients.Chem, aes(
-  x = fct_inorder(month.abb[month]), y = tp_ug)) +
+  x = fct_inseq(as.factor(month)), y = tp_ug)) +
   geom_boxplot(aes(color=lakename), size=1) +
+  scale_x_discrete(labels=month) +
   ylab(expression("Total Phosphorus")) +
   xlab(expression("Month")) +
   labs(color="Lake name") +
@@ -135,20 +138,19 @@ Plot_TN <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   mytheme
 print(Plot_TN)
 
-Lake_Name_Legend <- get_legend(Plot_TP + mytheme + guides(color = guide_legend(nrow = 1))) #creating legend for cowplot
-
 Plot_Temp_TP_TN <-
   plot_grid(
     Plot_Temp + theme(legend.position="none") + xlab(NULL),
     Plot_TP  + theme(legend.position="none") + xlab(NULL), 
-    Plot_TN  + theme(legend.position="none"), 
+    Plot_TN  + theme(legend.position="bottom"), 
             ncol=1, #all plots in one column
-            align = 'hv', #aligning in both directions 
-            rel_widths = c(10,10), #column widths
-            rel_heights = c(10,10))+ #row heights
+            nrows=3,
+            align = 'v', #aligning in both directions 
+            #rel_widths = c(10,10,10), #column widths
+            rel_heights = c(1,1,1.5)) + #row heights
   mytheme
 
-Plot_Temp_TP_TN_Legend <- plot_grid(Plot_Temp_TP_TN, Lake_Name_Legend) #adding legend
+Plot_Temp_TP_TN_Legend <- plot_grid(Plot_Temp_TP_TN) #adding legend
 print(Plot_Temp_TP_TN_Legend)
 ```
 
