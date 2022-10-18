@@ -112,7 +112,6 @@ Plot_Temp <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   x = factor(month, levels=c(1:12)), y = temperature_C)) +
   geom_boxplot(aes(color=lakename), size=1) + #creating scatter plot
   scale_x_discrete(labels=month.abb, drop=FALSE) +
-  #scale_x_discrete(labels=c("1"="Jan","2"="Feb", "5"="May", "6"="Jun", "7"="Jul", "8"="Aug","9"="Sep", "10"="Oct", "11"="Nov")) +
   ylab(expression("Temperature (C)")) + #setting y axis label
   xlab(expression("Month")) + #setting x axis label
   labs(color="Lake name") + #setting legend label
