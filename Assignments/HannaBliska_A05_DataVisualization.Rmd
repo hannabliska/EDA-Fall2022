@@ -10,7 +10,7 @@ geometry: margin=2.54cm
 #For it to work, the "formatR" package needs to be installed
 
 #install.packages('formatR')
-#Hanna to check color, off of 0, units, how to make the legend smaller, month order
+#Hanna to check color, off of 0, units, how to make the legend smaller, month order, drop nas?
 ```
 
 ## OVERVIEW
@@ -106,19 +106,20 @@ present and that graph axes are aligned.
 Tip: R has a build in variable called `month.abb` that returns a list of months;
 see <https://r-lang.com/month-abb-in-r-with-example>
 
-```{r}
+```{r, fig.height = 3, fig.width = 4, warning = FALSE}
 #5
 Plot_Temp <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   x = fct_inorder(month.abb[month]), y = temperature_C)) +
-  geom_point(aes(color=lakename), size=1) + #creating scatter plot
+  geom_boxplot(aes(color=lakename), size=1) + #creating scatter plot
   ylab(expression("Temperature (C)")) + #setting y axis label
   xlab(expression("Month")) + #setting x axis label
   labs(color="Lake name") + #setting legend label
   mytheme #utilizing my theme
 print(Plot_Temp)
 
-Plot_TP <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = fct_inorder(month.abb[month]), y = tp_ug)) +
-  geom_point(aes(color=lakename), size=1) +
+Plot_TP <- ggplot(Peter.Paul.Nutrients.Chem, aes(
+  x = fct_inorder(month.abb[month]), y = tp_ug)) +
+  geom_boxplot(aes(color=lakename), size=1) +
   ylab(expression("Total Phosphorus")) +
   xlab(expression("Month")) +
   labs(color="Lake name") +
@@ -127,14 +128,14 @@ print(Plot_TP)
 
 Plot_TN <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   x = fct_inorder(month.abb[month]), y = tn_ug)) +
-  geom_point(aes(color=lakename), size=1) +
+  geom_boxplot(aes(color=lakename), size=1) +
   ylab(expression("Total Nitrogen")) +
   xlab(expression("Month")) +
   labs(color="Lake name") +
   mytheme
 print(Plot_TN)
 
-Lake_Name_Legend <- get_legend(Plot_TP + mytheme) #creating legend for cowplot
+Lake_Name_Legend <- get_legend(Plot_TP + mytheme + guides(color = guide_legend(nrow = 1))) #creating legend for cowplot
 
 Plot_Temp_TP_TN <-
   plot_grid(
@@ -154,7 +155,7 @@ print(Plot_Temp_TP_TN_Legend)
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
-> Answer: It appears that the temperature of the lakes, as well as the total nitrogen and phosphorus, increase over the summer months with a peak in July and August. Peter Lake appears to have higher concentrations of nitrogen and phosphorus than Paul Lake. 
+> Answer: It appears that the temperature of the lakes increases over the summer months with a peak in July and August. It also appears that nitrogen and phosphorus increase over the summer with peaks in August and September; there also appears to be a great amount of variability in the nutrient samples in the summer months. Peter Lake appears to have slightly higher concentrations of nitrogen and phosphorus than Paul Lake. Paul Lake appears to have slightly higher lake temperatures from May to Septmeber than Peter Lake. 
 
 6. [Niwot Ridge] Plot a subset of the litter data set by displaying only the 
 "Needles" functional group. Plot the dry mass of needle litter by date and 
