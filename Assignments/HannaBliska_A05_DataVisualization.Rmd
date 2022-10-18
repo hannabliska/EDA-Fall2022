@@ -106,7 +106,7 @@ present and that graph axes are aligned.
 Tip: R has a build in variable called `month.abb` that returns a list of months;
 see <https://r-lang.com/month-abb-in-r-with-example>
 
-```{r, fig.height = 3, fig.width = 4, warning = FALSE}
+```{r}
 #5
 Plot_Temp <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   x = factor(month, levels=c(1:12)), y = temperature_C)) + 
@@ -140,21 +140,19 @@ Plot_TN <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   labs(color="Lake name") + #setting legend label
   mytheme #utilizing my theme
 print(Plot_TN)
-
+```
+```{r, fig.height=10, fig.width=10}
 Plot_Temp_TP_TN <-
   plot_grid(
     Plot_Temp + theme(legend.position="none") + xlab(NULL),
     Plot_TP  + theme(legend.position="none") + xlab(NULL), 
     Plot_TN  + theme(legend.position="bottom"), 
             ncol=1, #all plots in one column
-            nrows=3,
+            nrows=3, #three rows, one for each plot
             align = 'v', #aligning vertically
-            rel_heights = c(1,1,1.5)) + #setting row heights
-            mytheme
+            rel_heights = c(2,2,2.5)) #setting row heights
 print(Plot_Temp_TP_TN)
-
 ```
-
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
