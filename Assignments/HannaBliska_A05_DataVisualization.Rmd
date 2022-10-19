@@ -155,7 +155,7 @@ print(Plot_Temp_TP_TN)
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
-> Answer: It appears that the temperature of the lakes increases over the summer months with a peak in July and August. It also appears that nitrogen and phosphorus increase over the summer with peaks in August and September; there also appears to be a great amount of variability in the nutrient samples in the summer months. Peter Lake appears to have slightly higher concentrations of nitrogen and phosphorus than Paul Lake. Paul Lake appears to have slightly higher lake temperatures from May to Septmeber than Peter Lake. 
+> Answer: It appears that median temperature of the lakes increases over the summer months with a peak in the late summer months of August and September. Median nitrogen and phosphorus levels also increase over the summer; median nitrogen levels are highest in August and in August and September for phosphorus. There appears to be high variability in the nutrient samples in the summer months. Peter Lake appears to have slightly higher concentrations of nitrogen and phosphorus than Paul Lake. Paul Lake appears to have slightly higher lake temperatures from May to Septmeber than Peter Lake. 
 
 6. [Niwot Ridge] Plot a subset of the litter data set by displaying only the 
 "Needles" functional group. Plot the dry mass of needle litter by date and 
@@ -190,4 +190,4 @@ print(Litter_Plot_Needles_Faceted)
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer: I think that plot 7 is more effective for visualizing the data because it allows the viewer to see the differences in the distribution of the dry mass data for each NLCD class more clearly. On plot 7, we can easily see that grassland herbaceous and evergreen forest classes had observations (potentially outliers) that were much higher in dry mass than the shrub scrub class. We are also more easily able to see the concentration in observations of dry mass in the shrub scrub class in Plot 7; this helps us to understand the tighter distribution of dry mass observations for this class as well as to understand that most of the observations were close to zero.  
+> Answer: I think that plot 7 is more effective for visualizing the data because it allows the viewer to see the differences in the distribution of dry mass data for each NLCD class more clearly. On plot 7, we can easily see that grassland herbaceous and evergreen forest classes had observations (potentially outliers) that were much higher in dry mass than the shrub scrub class. We are also more easily able to see clustering in the observations of dry mass in the shrub scrub class in Plot 7; this helps us to understand the tighter distribution of dry mass observations for this class as well as to understand that most of the observations were close to zero.  
