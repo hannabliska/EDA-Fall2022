@@ -155,7 +155,7 @@ print(Plot_Temp_TP_TN)
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
-> Answer: It appears that median temperature of the lakes increases over the summer months with a peak in the late summer months of August and September. Median nitrogen and phosphorus levels also increase over the summer; median nitrogen levels are highest in August and in August and September for phosphorus. There appears to be high variability in the nutrient samples in the summer months. Peter Lake appears to have slightly higher concentrations of nitrogen and phosphorus than Paul Lake. Paul Lake appears to have slightly higher lake temperatures from May to Septmeber than Peter Lake. 
+> Answer: It appears that median temperature of the lakes increases over the summer months with a peak in the late summer months of August and September. Median nitrogen and phosphorus levels also increase over the summer; median nitrogen levels are highest in August and September while median phosphorus levels are highest in September. There appears to be high variability in the nutrient samples in the summer months. Peter Lake appears to have slightly higher concentrations of nitrogen and phosphorus than Paul Lake. Paul Lake appears to have slightly higher lake temperatures from May to Septmeber than Peter Lake. 
 
 6. [Niwot Ridge] Plot a subset of the litter data set by displaying only the 
 "Needles" functional group. Plot the dry mass of needle litter by date and 
