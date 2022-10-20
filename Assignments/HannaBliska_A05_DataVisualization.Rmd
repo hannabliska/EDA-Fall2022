@@ -183,7 +183,7 @@ Litter_Plot_Needles_Faceted <- ggplot(subset(
   geom_point() + #creating a scatter plot
   ylab(expression("Dry Mass of Needle Litter")) + #setting y axis label
   xlab(expression("Date of Collection")) + #setting x axis label
-  facet_grid(functionalGroup ~ nlcdClass) #using facet grid to facet the plot 
+  facet_wrap(vars(nlcdClass)) #using facet grid to facet the plot 
   #by NLCD class
 print(Litter_Plot_Needles_Faceted)
 
