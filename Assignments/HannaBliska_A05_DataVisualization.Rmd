@@ -93,7 +93,7 @@ Plot_TotalP_Phosphate <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = po4, y = tp_u
   geom_point(aes(color=lakename), size=1) + #creating scatter plot
   xlim(0, 50) + #adjusting axis
   geom_smooth(method=lm, se = FALSE, color="black") +
-  ylab(expression("Total Phosphorus")) + #setting y axis label
+  ylab(expression("Total Phosphorus (µg)")) + #setting y axis label
   xlab(expression("Phosphate")) + #setting x axis label
   labs(color="Lake name") #setting legend label
 print(Plot_TotalP_Phosphate)
@@ -125,7 +125,7 @@ Plot_TP <- ggplot(Peter.Paul.Nutrients.Chem, aes(
   #creating a level for each month for the x axis, setting y axis as total p
   geom_boxplot(aes(color=lakename)) + #creating box plot
   scale_x_discrete(labels=month.abb, drop=FALSE) + #creating month labels
-  ylab(expression("Total Phosphorus")) + #setting y axis label
+  ylab(expression("Total Phosphorus (µg)")) + #setting y axis label
   xlab(expression("Month")) + #setting x axis label
   labs(color="Lake name") #setting legend label
 print(Plot_TP)
@@ -135,7 +135,7 @@ Plot_TN <- ggplot(Peter.Paul.Nutrients.Chem, aes(
    #creating a level for each month for the x axis, setting y axis as total N
   geom_boxplot(aes(color=lakename)) + #creating box plot
   scale_x_discrete(labels=month.abb, drop=FALSE) + #creating month labels
-  ylab(expression("Total Nitrogen")) + #setting y axis label
+  ylab(expression("Total Nitrogen (µg)")) + #setting y axis label
   xlab(expression("Month")) + #setting x axis label
   labs(color="Lake name") #setting legend label
 print(Plot_TN)
@@ -171,7 +171,7 @@ Litter_Plot_Needles <- ggplot(subset(
   Niwot.Litter, functionalGroup == "Needles"), aes(
     x=collectDate, y=dryMass)) + #subsetting functional group by needles
   geom_point(aes(color=nlcdClass)) + #creating scatter plot
-  ylab(expression("Dry Mass of Needle Litter")) + #setting y axis label
+  ylab(expression("Dry Mass of Needle Litter (g)")) + #setting y axis label
   xlab(expression("Date of Collection")) + #setting x axis label
   labs(color="NLCD Class") #setting legend label
 print(Litter_Plot_Needles)
@@ -181,7 +181,7 @@ Litter_Plot_Needles_Faceted <- ggplot(subset(
   Niwot.Litter, functionalGroup == "Needles"), aes(
     x=collectDate, y=dryMass)) + #subsetting functional group by needles
   geom_point() + #creating a scatter plot
-  ylab(expression("Dry Mass of Needle Litter")) + #setting y axis label
+  ylab(expression("Dry Mass of Needle Litter (g)")) + #setting y axis label
   xlab(expression("Date of Collection")) + #setting x axis label
   facet_wrap(vars(nlcdClass)) #using facet grid to facet the plot 
   #by NLCD class
