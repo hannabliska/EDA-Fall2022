@@ -94,7 +94,7 @@ Plot_TotalP_Phosphate <- ggplot(Peter.Paul.Nutrients.Chem, aes(x = po4, y = tp_u
   xlim(0, 50) + #adjusting axis
   geom_smooth(method=lm, se = FALSE, color="black") +
   ylab(expression("Total Phosphorus (µg/l)")) + #setting y axis label
-  xlab(expression("Phosphate (ug/l)")) + #setting x axis label
+  xlab(expression("Phosphate (µg/l)")) + #setting x axis label
   labs(color="Lake name") #setting legend label
 print(Plot_TotalP_Phosphate)
 ```
