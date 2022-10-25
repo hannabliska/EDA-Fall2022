@@ -130,7 +130,9 @@ step(AIC.Processed.NTL.LTER)
 
 
 #10
-
+temp.mult.regression <-
+  lm(data = Processed.NTL.LTER, temperature_C ~ depth + daynum + 
+              year4)
 
 ```
 
