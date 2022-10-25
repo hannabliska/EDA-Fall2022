@@ -183,8 +183,7 @@ print(irradiancebydepth2)
 It is possible, and often useful, to consider multiple continuous explanatory variables at a time in a linear regression. For example, total phosphorus concentration in Paul Lake (the unfertilized lake) could be dependent on depth and dissolved oxygen concentration: #More than one x explaining variability in Y
 
 ``` {r, fig.height = 3, fig.width = 4}
-TPregression <- lm(data = subset(PeterPaul.chem.nutrients, lakename == "Paul Lake"), 
-                   tp_ug ~ depth + dissolvedOxygen)
+TPregression <- lm(data = subset(PeterPaul.chem.nutrients, lakename == "Paul Lake"), tp_ug ~ depth + dissolvedOxygen)
 summary(TPregression)
 #All values are less than 0.05, so the relationship is different from zero among the two x and the y individually. We can also see that our r^2 is 0.29, only 30% is due to the depth and the dissolved oxygen concentration. 
 
