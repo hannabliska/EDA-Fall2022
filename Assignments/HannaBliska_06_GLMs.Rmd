@@ -6,15 +6,6 @@ geometry: margin=2.54cm
 editor_options: 
   chunk_output_type: console
 ---
-
-```{r setup, include=FALSE}
-#This code chunk will tidy your knit PDF files, wrapping long code lines
-#For it to work, the "formatR" package needs to be installed
-
-#install.packages('formatR')
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
-```
-
 ## OVERVIEW
 
 This exercise accompanies the lessons in Environmental Data Analytics on generalized linear models. 
@@ -26,7 +17,6 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 4. Be sure to **answer the questions** in this assignment document.
 5. When you have completed the assignment, **Knit** the text and code into a single PDF file.
 
-
 ## Set up your session 
 1. Set up your session. Check your working directory. Load the tidyverse, agricolae and other needed packages. Import the *raw* NTL-LTER raw data file for chemistry/physics (`NTL-LTER_Lake_ChemistryPhysics_Raw.csv`). Set date columns to date objects.
 
@@ -34,16 +24,21 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 
 ```{r setup}
 #1
+#install.packages('formatR')
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
 getwd()
 library(tidyverse)
 library(agricolae)
 library(lubridate)
 
 #importing raw data with read.csv
-NTL.LTER.Lake.Chem.Phys <-read.csv("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv", stringsAsFactors = TRUE)
+NTL.LTER.Lake.Chem.Phys <-read.csv(
+  "./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv", 
+  stringsAsFactors = TRUE)
 
 #using as.date to format my dates
-NTL.LTER.Lake.Chem.Phys$sampledate <- as.Date(NTL.LTER.Lake.Chem.Phys$sampledate , format = "%m/%d/%y")
+NTL.LTER.Lake.Chem.Phys$sampledate <- as.Date(
+  NTL.LTER.Lake.Chem.Phys$sampledate , format = "%m/%d/%y")
 
 #2
 #building my theme
@@ -82,14 +77,14 @@ Processed.NTL.LTER <-
   #drop_na to remove NAs in my columns
   
 #5
-Plot.Depth.Temp <-
-  ggplot(Processed.NTL.LTER, aes(x=temperature_C, y=depth)) +
+Plot.Depth.Temp <- ggplot(
+  Processed.NTL.LTER, aes(x=temperature_C, y=depth)) +
   geom_point() + #creating a scatter plot
   ylab(expression("Temperature (C)")) + #setting y axis label
   xlab(expression("Depth (m)")) + #setting x axis label
   ylim(0,35) + #setting limit for y axis
-  geom_smooth(method=lm, se = FALSE, color="red") + #adding linear model
-  print(Plot.Depth.Temp)
+  geom_smooth(method=lm, se = FALSE, color="red") #adding linear model
+print(Plot.Depth.Temp)
 
 ```
 
@@ -102,7 +97,9 @@ Plot.Depth.Temp <-
 
 ```{r linear.regression}
 #7
-temp.depth.regression <- lm(data = Processed.NTL.LTER, temperature_C ~ depth) #linear regression between temperature and depth
+temp.depth.regression <- lm(
+  data = Processed.NTL.LTER, temperature_C ~ depth) 
+#linear regression between temperature and depth
 summary(temp.depth.regression)
 
 ```
@@ -132,7 +129,8 @@ step(AIC.Processed.NTL.LTER)
 #10
 temp.mult.regression <-
   lm(data = Processed.NTL.LTER, temperature_C ~ depth + daynum + 
-              year4) #running a multiple regression with variables
+              year4) 
+#running a multiple regression with variables
 #recommended by AIC
 summary(temp.mult.regression)
 
@@ -189,8 +187,9 @@ print(Plot.Temp.Lakes)
 TukeyHSD(Lake.temp.anova) #creating Tukey HSD test
 
 Lake.temp.anova.groups <- HSD.test(
-  Lake.temp.anova, "lakename", group=TRUE) #evaluating the groups
-#from Tukey HSD test results
+  Lake.temp.anova, 
+  "lakename", group=TRUE) 
+#evaluating the groups from Tukey HSD test results
 Lake.temp.anova.groups #printing the groups
 ```
 
