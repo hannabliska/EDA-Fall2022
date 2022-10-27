@@ -173,7 +173,7 @@ Plot.Temp.Lakes <-
   #aesthetics and transparency to scatter plot
   geom_smooth(method=lm, se = FALSE, color="red") + #adding linear
   #model to the graph in red
-  xlab(expression("Lake name")) + #setting x axis label
+  xlab(expression("Depth (m)")) + #setting x axis label
   ylab(expression("Temperature (C)")) + #setting y axis label
   ylim(0,35) + #setting limit for y axis
   labs(color="Lake name") #setting legend label
