@@ -57,8 +57,8 @@ Our first research question is: Does mean lake temperature recorded during July 
 
 3. State the null and alternative hypotheses for this question:
 > Answer:
-H0: The slope of the linear regression between depth and mean lake temperature is equal to zero; thus, depth has no effect on mean lake temperature across all lakes.
-Ha: The slope of the linear regression between depth and mean lake temperature is not equal to zero across all lakes; thus, depth has an effect on mean lake temperature across all lakes.
+H0: The slope of the linear regression between depth and mean lake temperature across all lakes is equal to zero. Thus, depth has no effect on mean lake temperature across all lakes.
+Ha: The slope of the linear regression between depth and mean lake temperature is not equal to zero across all lakes. Thus, depth has an effect on mean lake temperature across all lakes.
 
 4.  Wrangle your NTL-LTER dataset with a pipe function so that the records meet the following criteria: 
  * Only dates in July. 
@@ -93,7 +93,7 @@ print(Plot.Depth.Temp)
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: This figure suggests that temperature decreases in response to increased depths. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as it travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing (negative) linear trend; however, there is some variation in the distribution of the temperature data, particularly in the shallower depths. There are also fewer measurements of temperature recorded at deeper depths. The variation in the distribution of the temperature data suggests that the strength of the linear relationship may not be as strong (i.e., depth may not explain all of the variation in temperature) which we can test through performing a linear regression.
+> Answer: This figure suggests that temperature decreases in response to increased depths. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as light travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing (negative) linear trend; however, there is some variation in the distribution of the temperature data, particularly in the shallower depths, and there are also fewer measurements of temperature recorded at deeper depths. The variation in the distribution of the temperature data suggests that the strength of the linear relationship may not be as strong (i.e., depth may not explain all of the variation in temperature) which we can test through performing a linear regression.
 
 #less recordings deeper depths, more variability
 
@@ -111,7 +111,7 @@ summary(temp.depth.regression)
 
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer: 73.87% of the variability in temperature is explained by changes in depth, as indicated by the R^2 of my model (0.7387). The degrees of freedom for my model are 9726, which is the number of observations minus two (for two variables). The relationship between depth and temperature is negative and statistically significant, as the p value of my model is less than 0.05. This indicates that deeper depths have significantly lower temperatures than shallower depths. Temperature is predicted to decrease -1.94621 degrees celcius for every 1m deeper change in depth.
+> Answer: 73.87% of the variability in temperature is explained by changes in depth, as indicated by the R^2 of my model (0.7387). The degrees of freedom for my model are 9726, which is the number of observations minus two (for two variables). I can reject the null hypothesis and establish that relationship between depth and temperature is negative and statistically significant because the p value of my model is less than 0.05. This indicates that deeper depths have significantly lower temperatures than shallower depths. Temperature is predicted to decrease -1.94621 degrees celcius for every 1m deeper change in depth.
 
 ---
 
@@ -217,4 +217,4 @@ Crampton.Ward.Lakes.Ttest <- t.test(
 Crampton.Ward.Lakes.Ttest #printing results of t-test
 ```
 
->Answer: There is not a significant difference in lake temperatures between Crampton and Ward Lakes (p=0.2649). Therefore, we can infer that the mean lake temperatures of Crampton and Ward lakes in July are statiscally the same. This does match my answer for part 16, as Crampton and Ward Lake were a part of the same group (b) produced by the Tukey HSD test and comparison of means.
+>Answer: There is not a significant difference in lake temperatures between Crampton and Ward Lakes (p=0.2649). Therefore, we accept the null hypothesis and can infer that the mean lake temperatures of Crampton and Ward lakes in July are statiscally the same. This does match my answer for part 16, as Crampton and Ward Lake were a part of the same group (b) produced by the Tukey HSD test and comparison of means.
