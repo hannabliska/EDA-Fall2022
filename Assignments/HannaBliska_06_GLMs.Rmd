@@ -8,7 +8,7 @@ editor_options:
 ---
 ## OVERVIEW
 
-This exercise accompanies the lessons in Environmental Data Analytics on generalized linear models. 
+This exercise accompanies the lessons in Environmental Data Analytics on generalized linear models.  
 
 ## Directions
 1. Rename this file `<FirstLast>_A06_GLMs.Rmd` (replacing `<FirstLast>` with your first and last name).
@@ -17,6 +17,11 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 4. Be sure to **answer the questions** in this assignment document.
 5. When you have completed the assignment, **Knit** the text and code into a single PDF file.
 
+```{r, include=FALSE}
+#install.packages('formatR')
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
+```
+
 ## Set up your session 
 1. Set up your session. Check your working directory. Load the tidyverse, agricolae and other needed packages. Import the *raw* NTL-LTER raw data file for chemistry/physics (`NTL-LTER_Lake_ChemistryPhysics_Raw.csv`). Set date columns to date objects.
 
@@ -24,8 +29,6 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 
 ```{r setup}
 #1
-#install.packages('formatR')
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
 getwd()
 library(tidyverse)
 library(agricolae)
@@ -54,9 +57,8 @@ Our first research question is: Does mean lake temperature recorded during July 
 
 3. State the null and alternative hypotheses for this question:
 > Answer:
-H0: The slope of the linear regression between depth and mean lake temperature is equal to zero; thus, depth has no effect on mean lake temperature.
-Ha: The slope of the linear regression between depth and mean lake temperature is not equal to zero; thus, depth has an effect on mean lake temperature.
-
+H0: The slope of the linear regression between depth and mean lake temperature is equal to zero; thus, depth has no effect on mean lake temperature across all lakes.
+Ha: The slope of the linear regression between depth and mean lake temperature is not equal to zero across all lakes; thus, depth has an effect on mean lake temperature across all lakes.
 
 4.  Wrangle your NTL-LTER dataset with a pipe function so that the records meet the following criteria: 
  * Only dates in July. 
@@ -78,7 +80,7 @@ Processed.NTL.LTER <-
   
 #5
 Plot.Depth.Temp <- ggplot(
-  Processed.NTL.LTER, aes(x=temperature_C, y=depth)) +
+  Processed.NTL.LTER, aes(x=depth, y=temperature_C)) +
   geom_point() + #creating a scatter plot
   ylab(expression("Temperature (C)")) + #setting y axis label
   xlab(expression("Depth (m)")) + #setting x axis label
@@ -91,7 +93,9 @@ print(Plot.Depth.Temp)
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: This figure suggests that temperature decreases in response to increased depths. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as it travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing linear trend, however, there is some variation in the distribution. The variation suggests that the strength of the linear relationship may not be as strong, which we can test through performing a linear regression.
+> Answer: This figure suggests that temperature decreases in response to increased depths. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as it travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing (negative) linear trend; however, there is some variation in the distribution of the temperature data, particularly in the shallower depths. There are also fewer measurements of temperature recorded at deeper depths. The variation in the distribution of the temperature data suggests that the strength of the linear relationship may not be as strong (i.e., depth may not explain all of the variation in temperature) which we can test through performing a linear regression.
+
+#less recordings deeper depths, more variability
 
 7. Perform a linear regression to test the relationship and display the results
 
@@ -168,10 +172,10 @@ summary(Lake.temp.anova2)
 ```{r scatterplot.2}
 #14.
 Plot.Temp.Lakes <-
-  ggplot(Processed.NTL.LTER, aes(x=depth, y=temperature_C)) +
-  geom_point(aes(color=lakename),alpha=0.5) + #adding lake name
+  ggplot(Processed.NTL.LTER, aes(x=depth, y=temperature_C, color=lakename)) +
+  geom_point(alpha=0.5) + #adding lake name
   #aesthetics and transparency to scatter plot
-  geom_smooth(method=lm, se = FALSE, color="red") + #adding linear
+  geom_smooth(method=lm, se = FALSE) + #adding linear
   #model to the graph in red
   xlab(expression("Depth (m)")) + #setting x axis label
   ylab(expression("Temperature (C)")) + #setting y axis label
@@ -195,19 +199,22 @@ Lake.temp.anova.groups #printing the groups
 
 16.From the findings above, which lakes have the same mean temperature, statistically speaking, as Peter Lake? Does any lake have a mean temperature that is statistically distinct from all the other lakes?
 
->Answer: Ward Lake, Paul Lake, and Peter lake have the same mean temperature; their mean temperatures are not statistically different. No lake has a mean temperature that is statistically distinct from all other lakes; we see in the results of the test, that there is at least two lakes in each group (for a, n=2; for b, n=2; for c, n=3; for d, n=3; for e, n=3). 
+>Answer: Ward Lake, Paul Lake, and Peter lake have the same mean temperature; their mean temperatures are not statistically different. No lake has a mean temperature that is statistically distinct from all other lakes; we see in the results of the test that there is at least two lakes in each group (for a, n=2; for b, n=2; for c, n=3; for d, n=3; for e, n=3).
 
 17. If we were just looking at Peter Lake and Paul Lake. What's another test we might explore to see whether they have distinct mean temperatures? 
 
->Answer: We could use a two sample t-test to explore if Peter and Paul Lake have distinct mean temperatures. The null hypothesis of this test would be that there is no difference between the mean of the lakes' temperatures. The alternative hypothesis would be that there is a significant difference betwen the temperatures of Peter and Paul Lake. 
+>Answer: We could use a two sample t-test to explore if Peter and Paul Lake have distinct mean temperatures. The null hypothesis of this test would be that there is no difference between the mean of the lakes' temperatures. The alternative hypothesis would be that there is a significant difference between the temperatures of Peter and Paul Lake. 
 
 18. Wrangle the July data to include only records for Crampton Lake and Ward Lake. Run the two-sample T-test on these data to determine whether their July temperature are same or different. What does the test say? Are the mean temperatures for the lakes equal? Does that match you answer for part 16?
 
 ```{r t.test}
 Crampton.Ward.Lakes <- Processed.NTL.LTER %>%
-  filter(lakename=="Crampton Lake" | lakename=="Ward Lake")
+  filter(lakename=="Crampton Lake" | lakename=="Ward Lake") 
+#filtering by Crampton Lake and Ward Lake
 
-t.test(data=Crampton.Ward.Lakes, temperature_C ~ lakename)
+Crampton.Ward.Lakes.Ttest <- t.test(
+  data=Crampton.Ward.Lakes, temperature_C ~ lakename) #running t-test
+Crampton.Ward.Lakes.Ttest #printing results of t-test
 ```
 
->Answer: There is not a significant difference in lake temperatures between Crampton and Ward Lakes (p=0.2649). Therefore, we can infer that the mean lake temperatures of Crampton and Ward lakes in July are statiscally the same. This does match my answer for part 16, as Crampton and Ward lake were a part of the same group (b) produced by the Tukey HSD test and comparison of means.
+>Answer: There is not a significant difference in lake temperatures between Crampton and Ward Lakes (p=0.2649). Therefore, we can infer that the mean lake temperatures of Crampton and Ward lakes in July are statiscally the same. This does match my answer for part 16, as Crampton and Ward Lake were a part of the same group (b) produced by the Tukey HSD test and comparison of means.
