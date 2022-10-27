@@ -128,7 +128,7 @@ Let's tackle a similar question from a different approach. Here, we want to expl
 AIC.Processed.NTL.LTER <- 
   lm(data = Processed.NTL.LTER, temperature_C ~ depth + daynum + 
               year4) #considering all explanatory variables in AIC
-step(AIC.Processed.NTL.LTER)
+step(AIC.Processed.NTL.LTER) #using the step function
 
 #10
 temp.mult.regression <-
