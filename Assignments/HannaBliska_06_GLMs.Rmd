@@ -44,10 +44,9 @@ NTL.LTER.Lake.Chem.Phys$sampledate <- as.Date(
   NTL.LTER.Lake.Chem.Phys$sampledate , format = "%m/%d/%y")
 
 #2
-#building my theme
 mytheme <- theme_classic(base_size = 11) + theme(
   axis.text = element_text(color="black"), 
-  legend.position = "right")
+  legend.position = "right") #building my theme
 theme_set(mytheme) #setting my theme
 
 ```
@@ -57,8 +56,8 @@ Our first research question is: Does mean lake temperature recorded during July 
 
 3. State the null and alternative hypotheses for this question:
 > Answer:
-H0: The slope of the linear regression between depth and mean lake temperature across all lakes is equal to zero. Thus, depth has no effect on mean lake temperature across all lakes.
-Ha: The slope of the linear regression between depth and mean lake temperature is not equal to zero across all lakes. Thus, depth has an effect on mean lake temperature across all lakes.
+   H0: The slope of the linear regression between depth and mean lake temperature  is equal to zero across all lakes. Thus, depth has no effect on mean lake temperature across all lakes.
+   Ha: The slope of the linear regression between depth and mean lake temperature is not equal to zero across all lakes. Thus, depth has an effect on mean lake temperature across all lakes.
 
 4.  Wrangle your NTL-LTER dataset with a pipe function so that the records meet the following criteria: 
  * Only dates in July. 
@@ -93,7 +92,8 @@ print(Plot.Depth.Temp)
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: This figure suggests that temperature decreases in response to increased depths. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as light travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing (negative) linear trend; however, there is some variation in the distribution of the temperature data, particularly in the shallower depths, and there are also fewer measurements of temperature recorded at deeper depths. The variation in the distribution of the temperature data suggests that the strength of the linear relationship may not be as strong (i.e., depth may not explain all of the variation in temperature) which we can test through performing a linear regression.
+> Answer: This figure suggests that temperature decreases in response to increases in depth. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as light travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing (negative) linear trend; however, there is some variation in the distribution of the temperature data, particularly in the shallower depths, and there are also fewer measurements of temperature recorded at deeper depths. 
+The variation in the distribution of the data visually suggests in terms of linearity of the trend that depth and temperature may not have a very strong linear relationship and thus that depth may not explain all of the variation in temperature. However, it is difficult to discern the strength of the linear trend visually; we can test its strength through performing a linear regression. The distribution of the data also suggests that depth and temperature may have a non-linear relationship, as the data form a non-linear distribution.
 
 #less recordings deeper depths, more variability
 
@@ -111,7 +111,7 @@ summary(temp.depth.regression)
 
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer: 73.87% of the variability in temperature is explained by changes in depth, as indicated by the R^2 of my model (0.7387). The degrees of freedom for my model are 9726, which is the number of observations minus two (for two variables). I can reject the null hypothesis and establish that relationship between depth and temperature is negative and statistically significant because the p value of my model is less than 0.05. This indicates that deeper depths have significantly lower temperatures than shallower depths. Temperature is predicted to decrease -1.94621 degrees celcius for every 1m deeper change in depth.
+> Answer: 73.87% of the variability in temperature is explained by changes in depth, as indicated by the R^2 of my model (0.7387). The degrees of freedom for my model are 9726, which is the number of observations in the model's data set minus two (for the two variables included in the model). I can reject the null hypothesis and establish that relationship between depth and temperature is negative and statistically significant because the p value of my model is less than 0.05. This indicates that deeper depths have significantly lower temperatures than shallower depths. Temperature is predicted to decrease -1.94621 degrees celcius for every 1m deeper change in depth.
 
 ---
 
