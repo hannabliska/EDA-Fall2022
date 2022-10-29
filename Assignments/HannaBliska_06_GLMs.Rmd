@@ -92,10 +92,7 @@ print(Plot.Depth.Temp)
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: This figure suggests that temperature decreases in response to increases in depth. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as light travels through water to deeper depths. The distribution of points suggests that the relationship between depth and temperature is a decreasing (negative) linear trend; however, there is some variation in the distribution of the temperature data, particularly in the shallower depths, and there are also fewer measurements of temperature recorded at deeper depths. 
-The variation in the distribution of the data visually suggests in terms of linearity of the trend that depth and temperature may not have a very strong linear relationship and thus that depth may not explain all of the variation in temperature. However, it is difficult to discern the strength of the linear trend visually; we can test its strength through performing a linear regression. The distribution of the data also suggests that depth and temperature may have a non-linear relationship, as the data form a non-linear distribution.
-
-#less recordings deeper depths, more variability
+> Answer: This figure suggests that temperature decreases in response to increases in depth. This is an intuitive result, as the load of light energy (which heats water) is high at shallow depths but decreases as light travels through water to deeper depths.  This figure suggests that there is some variation in the distribution of the temperature data, particularly in the shallower depths, and there are also fewer measurements of temperature recorded at deeper depths.  The distribution of the data, as well as the linear model, suggest that the linear relationship between depth and temperature would be a decreasing or negative linear trend. However, the distribution of the data also suggests that depth and temperature may have a non-linear relationship, as the data appear to form a non-linear distribution (curve).  Thus, it is possible that depth and temperature may not have a very strong linear relationship (lower R^2 value) and that a linear model using depth as the explanatory variable may not explain all of the variation in temperature. However, it is difficult to discern the strength of the linear trend visually; we can test its strength through performing a linear regression.
 
 7. Perform a linear regression to test the relationship and display the results
 
@@ -108,10 +105,9 @@ summary(temp.depth.regression)
 
 ```
 
-
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer: 73.87% of the variability in temperature is explained by changes in depth, as indicated by the R^2 of my model (0.7387). The degrees of freedom for my model are 9726, which is the number of observations in the model's data set minus two (for the two variables included in the model). I can reject the null hypothesis and establish that relationship between depth and temperature is negative and statistically significant because the p value of my model is less than 0.05. This indicates that deeper depths have significantly lower temperatures than shallower depths. Temperature is predicted to decrease -1.94621 degrees celcius for every 1m deeper change in depth.
+> Answer: 73.87% of the variability in temperature is explained by changes in depth, as indicated by the R^2 of my model (0.7387). The degrees of freedom for my model are 9726, which is the number of observations in the model's data set minus two (for the two variables included in the model). I can reject the null hypothesis and establish that relationship between depth and temperature is negative and statistically significant because the p value of my model is less than 0.001. My results indicate that deeper depths have significantly lower temperatures than shallower depths. Temperature is predicted to decrease -1.94621 degrees celcius for every 1m deeper change in depth.
 
 ---
 
@@ -142,7 +138,7 @@ summary(temp.mult.regression)
 
 11. What is the final set of explanatory variables that the AIC method suggests we use to predict temperature in our multiple regression? How much of the observed variance does this model explain? Is this an improvement over the model using only depth as the explanatory variable?
 
-> Answer: The final set of explanatory variables are depth, daynum, and year4. This multiple regression model explains 74.12% of the variance in temperature, as indicated by the R^2 of 0.7412). This is a slight improvement in variance over using only depth, which explained 73.87% of the variance in temperature. 
+> Answer: The final set of explanatory variables includes depth, daynum, and year4. This multiple regression model explains 74.12% of the variance in temperature, as indicated by the R^2 of 0.7412). This is a slight improvement in variance over using only depth as an explanatory variable, which explained 73.87% of the variance in temperature. 
 
 ---
 ## Analysis of Variance
@@ -165,7 +161,7 @@ summary(Lake.temp.anova2)
 
 13. Is there a significant difference in mean temperature among the lakes? Report your findings. 
 
-> Answer: Yes, there is a significant difference in mean temperature among the lakes (p<0.001).
+> Answer: I performed a one-way ANOVA between lake name and temperature. The ANOVA determined that there was a significant difference in mean temperature among the lakes (p<0.001). Therefore, we reject the null hypothesis and accept the alternative hypothesis that not all mean temperatures among the lakes are equal.
 
 14. Create a graph that depicts temperature by depth, with a separate color for each lake. Add a geom_smooth (method = "lm", se = FALSE) for each lake. Make your points 50 % transparent. Adjust your y axis limits to go from 0 to 35 degrees. Clean up your graph to make it pretty. 
 
@@ -199,7 +195,7 @@ Lake.temp.anova.groups #printing the groups
 
 16.From the findings above, which lakes have the same mean temperature, statistically speaking, as Peter Lake? Does any lake have a mean temperature that is statistically distinct from all the other lakes?
 
->Answer: Ward Lake, Paul Lake, and Peter lake have the same mean temperature; their mean temperatures are not statistically different. No lake has a mean temperature that is statistically distinct from all other lakes; we see in the results of the test that there is at least two lakes in each group (for a, n=2; for b, n=2; for c, n=3; for d, n=3; for e, n=3).
+>Answer: Ward Lake and Paul Lake have statistically the same mean temperature as Peter Lake. Ward Lake, Paul Lake, and Peter Lake are all a part of the same means group (group "c"), as demonstrated by the HSD test. No lake has a mean temperature that is statistically distinct from all other lakes; we see in the results of the HSD test that there is at least two lakes in each group (for a, n=2; for b, n=2; for c, n=3; for d, n=3; for e, n=3).
 
 17. If we were just looking at Peter Lake and Paul Lake. What's another test we might explore to see whether they have distinct mean temperatures? 
 
@@ -217,4 +213,4 @@ Crampton.Ward.Lakes.Ttest <- t.test(
 Crampton.Ward.Lakes.Ttest #printing results of t-test
 ```
 
->Answer: There is not a significant difference in lake temperatures between Crampton and Ward Lakes (p=0.2649). Therefore, we accept the null hypothesis and can infer that the mean lake temperatures of Crampton and Ward lakes in July are statiscally the same. This does match my answer for part 16, as Crampton and Ward Lake were a part of the same group (b) produced by the Tukey HSD test and comparison of means.
+>Answer: There is not a significant difference in lake temperatures between Crampton and Ward Lakes (p=0.2649). Therefore, we accept the null hypothesis and can infer that the mean lake temperatures of Crampton and Ward Lakes in July are statiscally the same. This does match my answer for part 16, as Crampton and Ward Lake were a part of the same group (b) produced by the Tukey HSD test and comparison of means.
