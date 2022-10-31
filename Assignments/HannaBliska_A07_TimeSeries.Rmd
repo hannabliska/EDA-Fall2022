@@ -44,6 +44,44 @@ mytheme <- theme_classic(base_size = 12) + theme(
   axis.text = element_text(color="black"), 
   legend.position = "right") #building my theme
 theme_set(mytheme) #setting my theme
+
+#2
+#importing datasets
+O3_2010 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2010_raw.csv", stringsAsFactors = TRUE)
+
+O3_2011 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2011_raw.csv", stringsAsFactors = TRUE)
+
+O3_2012 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2012_raw.csv", stringsAsFactors = TRUE)
+
+O3_2013 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2013_raw.csv", stringsAsFactors = TRUE)
+
+O3_2014 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2014_raw.csv", stringsAsFactors = TRUE)
+
+O3_2015 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2015_raw.csv", stringsAsFactors = TRUE)
+
+O3_2016 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2016_raw.csv", stringsAsFactors = TRUE)
+
+O3_2017 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2017_raw.csv", stringsAsFactors = TRUE)
+
+O3_2018 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2018_raw.csv", stringsAsFactors = TRUE)
+
+O3_2019 <- read.csv(
+  "./Data/Raw/Ozone_TimeSeries/EPAair_O3_GaringerNC2019_raw.csv", stringsAsFactors = TRUE)
+
+#using `rbind` to combine the datasets into single dataframe
+GaringerOzone <- rbind(
+  O3_2010, O3_2011, O3_2012, O3_2013, 
+  O3_2014, O3_2015, O3_2016, O3_2017, 
+  O3_2018, O3_2019)
 ```
 
 ## Wrangle
@@ -58,13 +96,28 @@ theme_set(mytheme) #setting my theme
 
 ```{r}
 # 3
+#formatting date column to be a date class
+GaringerOzone$Date <-as.Date(
+  GaringerOzone$Date, format="%m/%d/%Y")
 
 # 4
+#using select to wrangle dataset for specific columns
+GaringerOzone <- select(GaringerOzone, Date, Daily.Max.8.hour.Ozone.Concentration, DAILY_AQI_VALUE)
 
 # 5
+#using `as.data.frame` to create a data frame
+#data frame has one column with every day from 2010-01-01 to
+#2019-12-31
+Days <- as.data.frame(seq(as.Date("2010-01-01"), as.Date("2019-12-31"),"days")) 
+
+#renaming column
+colnames(Days) <- c("Date")
 
 # 6
-
+#using `left_join` to join the datasets
+#listing Days first to preserve the number of rows
+#by date because this is the column in common
+GaringerOzone <- left_join(Days, GaringerOzone, by = c("Date"))
 
 ```
 
@@ -74,10 +127,15 @@ theme_set(mytheme) #setting my theme
 
 ```{r}
 #7
-
+Ozone_Line_Plot <- ggplot(GaringerOzone, aes(x=Date, y=Daily.Max.8.hour.Ozone.Concentration)) +
+  geom_line() +
+  xlab(expression("Date")) +
+  ylab(expression ("Maximum Ozone Concentration (ppm)")) +
+  geom_smooth(method=lm, se = FALSE, color="red")
+print(Ozone_Line_Plot)
 ```
 
->Answer:
+>Answer: The linear trend of my data suggests that ozone concentrations may have slightly decreased over time, but that there is no significant upward or downward trend. However, the distribution of my data suggests that there may be seasonal variation in my data, as shown by the up and down movement in the data that appears periodically.
 
 ## Time Series Analysis
 
@@ -87,16 +145,39 @@ Study question: Have ozone concentrations changed over the 2010s at this station
 
 ```{r}
 #8
+GaringerOzone$Daily.Max.8.hour.Ozone.Concentration <- 
+  zoo::na.approx(
+  GaringerOzone$Daily.Max.8.hour.Ozone.Concentration)
 
 ```
 
-> Answer: 
+> Answer: We used a linear interpolation because we wanted to fill our NA values with ozone concentrations that fall between the previous and next measurement of ozone concentrations. This makes sense given that we have relatively few, and infrequent, NAs. We did not use the piecewise constant method because this method would replace NAs with values equal to the measurement made nearest to that date, which would cause replicates in our ozone concentrations between two days rather than our desired measurement that would fall between the concentrations of two days and follows the trend of our data. Similarly, we did not use the spline interpolation because it uses a quadratic function to interpolate NAs; given the up and down linear distribution of our data, it is more logical to use a linear function to interpolate NAs rather than a quadratic function. 
 
 
 9. Create a new data frame called `GaringerOzone.monthly` that contains aggregated data: mean ozone concentrations for each month. In your pipe, you will need to first add columns for year and month to form the groupings. In a separate line of code, create a new Date column with each month-year combination being set as the first day of the month (this is for graphing purposes only)
 
 ```{r}
 #9
+#new dataframe with aggregate data
+GaringerOzone.monthly <-
+  GaringerOzone %>%
+  mutate(month = month(Date)) %>% #adding month column
+  mutate(year = year(Date)) %>% #adding a year column
+  group_by(month, year) %>% #grouping by month and year 
+  summarise(meanOzoneConcentration = mean(Daily.Max.8.hour.Ozone.Concentration)) #generating means
+
+#separate line of code for month-year combinations
+#pipe to create a new column combining month and year columns
+#adding a 1 for the first day of every month
+GaringerOzone.monthly <-
+  GaringerOzone.monthly %>%
+  mutate("firstmonth"=paste0("1", "-", month, "-", year))
+
+#converting firstmonth column into factor class
+GaringerOzone.monthly$firstmonth <- as.factor(GaringerOzone.monthly$firstmonth)
+
+#converting firstmonth column into a date format
+GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, format="%d-%m-%Y")
 
 ```
 

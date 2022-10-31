@@ -237,6 +237,12 @@ Adjusting the data may be necessary to fulfill the assumptions of a trend test. 
 * **Linear**: could be thought of as a "connect the dots" approach. Any missing data are assumed to fall between the previous and next measurement, with a straight line drawn between the known points determining the values of the interpolated data on any given date.
 * **Spline**: similar to a linear interpolation except that a quadratic function is used to interpolate rather than drawing a straight line.
 
+#important to know if there is any missing data on your dataset. If there is a big gap, that challenges 
+#if the gap is not too long, we can use interpolation.
+#piecewise constant (nearest neighbor, any missing data will be assumed to be equal to nearest measurement, earlier or later)
+#linear interpolation (like connecting the dots, and then there's a gap, the linear interpolation will connect the dots). Any missing data will fall between (EMPHASIS ON BETWEEN) nearest and next.
+#spline uses a quadratic function rather than a straight line.
+
 #### Example: interpolation
 
 The Eno River discharge data doesn't have any short periods of missing data, so interpolation would not be a good choice for that dataset. We will illustrate a linear interpolation using the wind speed dataset. 
