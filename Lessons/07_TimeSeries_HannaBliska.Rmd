@@ -22,7 +22,59 @@ Nonstationary data: time series that will have a significant upward or downward 
 
 Seasonal: regular patterns over time.
 
-What is correlation? 
+What is correlation? Correlation is a measure of linear dependence between two variables. In TSA: autocorrelation is the measure of dependence between two adjacent values of the same variables. Self correlation. Y(t) is the original series and Y(s) is a lagged version of the series. Comparing observations in regular Y with previous observation and seeing how they relate. Lag 1 autocorrelation is the correlation between Y(t) and Y(s). Lag 2, then, compare Y(1) with Y(3) instead of Y(2). Autocovariance and autocorrelation function give information about the dependence structure of a time series. Good model for time series will need to have the observation at T-1 and T-2. What happes two steps before T will be relevant to T. 
+
+Stationary process: laws that govern the behavior of the process do not change over time. No matter where in time, same mean, SD, and autocorrelation. White noise is a great example of a stationary process. It is a sequence of independent, randomly distributed variables. Mean =0. 
+
+Partial autocorrelation: ACF (autocorrelation function) --> measures the linear dependency of Y(t) and Y(t-h). Intermediate variables also play an important value. 
+
+Partial Autocorrelation: Remove the influence of all of these intermediate variables --> only a direct correlation. 
+
+You always build the ACF and PACF to a stochastic process. Autoregressive: regression on previous observations. No external variables, only lagged variables. 
+
+PACF is the correlation between lagged variables when we remove the intermediate. ACF and PACF for lag 1 will always be the same, but lag 2 will be different. 
+
+ACF --> seasonal dataset.
+
+Trend component: long term tendency that you see on your dataset. Could be linear or nonlinear. 
+
+Time series plot: able to identify if there is a trend or not (example with clear upward linear trend). Increasing trend. We try to start modeling the data set with a linear trend. If that does not work well, we can try to improve that. 
+
+Linear trend: Y=mx+b+error
+slope, intercept, and error. 
+
+Error: distance from observation to trend. 
+
+We estimate the trend because we want to remove the trend; want the mean to be the same. 
+
+Removal: Y - estimated trend. This is your error. We are creating a series of random trends. 
+
+Non-linear trends: if you have a quadratic trend, you can fit the curve to the data, model the distances. Exponential trends can be represented by linear trends by taking the log of your series. 
+
+Seasonal components: Short term regular wavelength pattern. Trend over time of increase on the total demand. Seasonal component going up and down and a trend over time. Overall, the demand increases.
+
+Estimating seasonal trend: seasonal means model. Series represented as a sum of U(t) + x. Monthly seasonal data (have 12 parameters). U(t) will have 12 values. Beta 1-12. How can I remove the seasonal trend? Take our y(t) and subtract the seasonal component we estimated. 
+
+Stochastic vs. deterministic trend: Detrending is accomplished by running a regression and obtaining the residuals. And the residuals will be the detrended series. Trend-stationary. 
+
+You can have a stochastic trend: has different behaviors over time. During specific times, the slope of the trend was different. A trend that changes over time. Cannot be removed by the same process as deterministic trend.
+
+Data set with trend in blue. Represented as dashed black line. Stochastic is represented by green line, harder to fit a linear trend. 
+
+Mann-Kendall test: detect deterministic †rends in a series of environmental data, climate data, or hydrological data. Cannot be applied to seasonal data. 
+
+H0: Y(t) is stationary
+H1: Y(t) follows a trend
+
+Test checks the magnitude of S.
+
+Spearman rank: does not have to be linear. Compute between Y(t) and t and if there is a strong correlation there is a trend. Cor or Cor.test will generate the coefficient. 
+
+Dick-fuller test: applied to verify the stochastic trend or to verify if the time series has a unit root. Dealing with a stochastic trend, dealing with a series that has a unit root. What is a unit root? The objective is to test if 
+H0: contains a unit root
+H1: is stationary (will eventually go back to mean a). Whenever you have a unit root, it will be hard to control. Differentiate. 
+
+ADF.test --> comments about this test.
 
 ## Set up
 
@@ -31,10 +83,11 @@ Today we will work with two datasets. The USGS dataset on discharge at the Eno R
 ```{r, message = FALSE}
 
 library(tidyverse)
+library(ggplot2)
 library(lubridate)
-#install.packages("trend")
+install.packages("trend")
 library(trend)
-#install.packages("zoo")
+install.packages("zoo")
 library(zoo)
 #install.packages("Kendall")
 library(Kendall)
@@ -102,10 +155,10 @@ EnoDischarge.complete <- EnoDischarge %>%
   drop_na(discharge.mean)
 
 EnoDischarge.early <- EnoDischarge.complete %>%
-  filter(datetime < as.Date("1985-01-01"))
+  filter(datetime < as.Date("1985-01-01")) #less than 1985
 
 EnoDischarge.late <- EnoDischarge.complete %>%
-  filter(datetime > as.Date("1985-01-01"))
+  filter(datetime > as.Date("1985-01-01")) #greater than 1985
 ```
 
 ## Decomposing a time series dataset
@@ -126,7 +179,7 @@ We first need to turn the discharge data into a time series object in R. This is
 Note: time series objects must be equispaced. In our case, we have daily data with no NAs in the data frame, so we don't need to worry about this. We will cover how to address data that are not equispaced later in the lesson.
 
 ```{r}
-EnoDischarge.late_ts <- ts(EnoDischarge.late$discharge.mean, start = c(1985,1), frequency = 365)
+EnoDischarge.late_ts <- ts(EnoDischarge.late$discharge.mean, start = c(1985,1), frequency = 365) #defining starting point (first observation, 1985 for us -- put in year,month frequency = 365.)
 ```
 
 The `stl` function decomposes the time series object into its component parts. We must specify that the window for seasonal extraction is either "periodic" or a specific number of at least 7. The decomposition proceeds through a loess (locally estimated scatterplot smoothing) function.
@@ -134,10 +187,11 @@ The `stl` function decomposes the time series object into its component parts. W
 ```{r}
 ?stl
 # Generate the decomposition
-EnoDischarge.late_Decomposed <- stl(EnoDischarge.late_ts, s.window = "periodic")
+EnoDischarge.late_Decomposed <- stl(EnoDischarge.late_ts, s.window = "periodic") #only 2 variables
 
 # Visualize the decomposed series. 
 plot(EnoDischarge.late_Decomposed)
+#first observed, #second seasonal, #third trend, #fourth remainder.Seasonal repeats itself every 365 observations. For trend, some periods where increased, some decreased. Definitely not a monotonic trend.
 
 # We can extract the components and turn them into data frames
 EnoDischarge.late_Components <- as.data.frame(EnoDischarge.late_Decomposed$time.series[,1:3])
@@ -145,6 +199,7 @@ EnoDischarge.late_Components <- as.data.frame(EnoDischarge.late_Decomposed$time.
 EnoDischarge.late_Components <- mutate(EnoDischarge.late_Components,
         Observed = EnoDischarge.late$discharge.mean,     
         Date = EnoDischarge.late$datetime)
+#adding two more columns with observed data and date objects
 
 # Visualize how the trend maps onto the data
 ggplot(EnoDischarge.late_Components) +
@@ -158,7 +213,7 @@ ggplot(EnoDischarge.late_Components) +
   geom_line(aes(y = Observed, x = Date),  size = 0.25) +
   geom_line(aes(y = seasonal, x = Date), color = "#c13d75ff") +
   geom_hline(yintercept = 0, lty = 2) +
-  ylab(expression("Discharge (ft"^3*"/s)"))
+  ylab(expression("Discharge (ft"^3*"/s)")) #going below y=0 line in every cycle of the seasonal component
 
 ```
 
@@ -195,7 +250,8 @@ summary(wind_data$AWND)
 # In real applications you will simply replace NAs
 wind_data_clean <- 
   wind_data %>% 
-  mutate( AWND.clean = zoo::na.approx(AWND) )
+  mutate( AWND.clean = zoo::na.approx(AWND) ) #connected dots
+#use NA approx if the data is in the middle of the data set (not at end or beginning)
 
 summary(wind_data_clean$AWND.clean)
 #Note the NA is gone
@@ -238,20 +294,20 @@ wind_data_ts <- ts(wind_data_clean$AWND.clean,
 
 #decompose
 wind_data_decomp <- stl(wind_data_ts,s.window = "periodic")
-plot(wind_data_decomp)
+plot(wind_data_decomp) #seasonal component is easy to spot
 
 # Run SMK test
 wind_data_trend1 <- Kendall::SeasonalMannKendall(wind_data_ts)
 
 # Inspect results
 wind_data_trend1
-summary(wind_data_trend1)
+summary(wind_data_trend1) #reject the null hypothesis that data is stationary --> reject and state that we have a trend
 
 
 wind_data_trend2 <- trend::smk.test(wind_data_ts)
 # Inspect results
 wind_data_trend2
-summary(wind_data_trend2)
+summary(wind_data_trend2) #can see individual seasons
 
 #Visualization
 wind_data_plot <-
@@ -260,13 +316,13 @@ ggplot(wind_data, aes(x = DATE, y = AWND)) +
   geom_line() +
   ylab("Average Wind Speed") +
   geom_smooth( method = lm )
-print(wind_data_plot)
+print(wind_data_plot) #decreased trend over time
 
 ```
 
 What would we conclude based on these findings? 
 
-> Answer:
+> Answer: Monotonic trend exists! Decreases.
 
 
 ## Forecasting with Autoregressive and Moving Average Models (ARMA)
