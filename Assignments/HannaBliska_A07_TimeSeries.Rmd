@@ -31,7 +31,19 @@ The completed exercise is due on Tuesday, March 16 at 11:59 pm.
 
 ```{r, message = FALSE}
 #1
-getwd()
+getwd() #checking wd
+
+#loading packages
+library(tidyverse)
+library(lubridate)
+library(zoo)
+library(trend)
+
+#setting my theme
+mytheme <- theme_classic(base_size = 12) + theme(
+  axis.text = element_text(color="black"), 
+  legend.position = "right") #building my theme
+theme_set(mytheme) #setting my theme
 ```
 
 ## Wrangle
