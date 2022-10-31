@@ -186,7 +186,7 @@ GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, fo
 
 ```{r}
 #10
-
+#one using GaringerOzone and one using GaringerOzone.monthly
 ```
 
 
