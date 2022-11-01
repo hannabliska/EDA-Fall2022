@@ -186,7 +186,17 @@ GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, fo
 
 ```{r}
 #10
-#one using GaringerOzone and one using GaringerOzone.monthly
+
+Daily.GaringerOzone.ts <- ts(
+  GaringerOzone$Daily.Max.8.hour.Ozone.Concentration,
+  start=c(2010,1,1),end=c(2019,12,31),frequency=365) 
+#daily measurements, using 365
+
+Monthly.GaringerOzone.ts <- ts(
+  GaringerOzone.monthly$meanOzoneConcentration, 
+  start=c(2010,1,1),end=c(2019,12,1),frequency=12) 
+#monthly measurements, using 12
+
 ```
 
 
@@ -195,6 +205,15 @@ GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, fo
 ```{r}
 #11
 
+Daily.GaringerOzone.ts.Decomposed <- stl(
+  Daily.GaringerOzone.ts, s.window = "periodic") 
+#decomposing daily time series
+plot(Daily.GaringerOzone.ts.Decomposed) #plotting components
+
+Monthly.GaringerOzone.ts.Decomposed <- stl(
+  Monthly.GaringerOzone.ts, s.window = "periodic")
+#decomposing monthly time series
+plot(Monthly.GaringerOzone.ts.Decomposed) #plotting components
 
 ```
 
@@ -203,9 +222,10 @@ GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, fo
 
 ```{r}
 #12
-
-
-
+Trend.Monthly.GaringerOzone <- 
+  Kendall::SeasonalMannKendall(
+  Monthly.GaringerOzone.ts)
+summary(Trend.Monthly.GaringerOzone)
 ```
 
 > Answer: 
@@ -222,7 +242,7 @@ GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, fo
 
 14. To accompany your graph, summarize your results in context of the research question. Include output from the statistical test in parentheses at the end of your sentence. Feel free to use multiple sentences in your interpretation.
 
-> Answer: 
+> Answer: stationary?
 
 15. Subtract the seasonal component from the `GaringerOzone.monthly.ts`. Hint: Look at how we extracted the series components for the EnoDischarge on the lesson Rmd file.
 
