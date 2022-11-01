@@ -37,7 +37,9 @@ getwd() #checking wd
 library(tidyverse)
 library(lubridate)
 library(zoo)
+library(Kendall)
 library(trend)
+library(scales)
 
 #setting my theme
 mytheme <- theme_classic(base_size = 12) + theme(
@@ -129,6 +131,7 @@ GaringerOzone <- left_join(Days, GaringerOzone, by = c("Date"))
 #7
 Ozone_Line_Plot <- ggplot(GaringerOzone, aes(x=Date, y=Daily.Max.8.hour.Ozone.Concentration)) +
   geom_line() +
+  scale_x_date(date_breaks="1 year", labels=date_format("%Y")) +
   xlab(expression("Date")) +
   ylab(expression ("Maximum Ozone Concentration (ppm)")) +
   geom_smooth(method=lm, se = FALSE, color="red")
@@ -146,7 +149,7 @@ Study question: Have ozone concentrations changed over the 2010s at this station
 ```{r}
 #8
 GaringerOzone$Daily.Max.8.hour.Ozone.Concentration <- 
-  zoo::na.approx(
+  na.approx(
   GaringerOzone$Daily.Max.8.hour.Ozone.Concentration)
 
 ```
@@ -168,16 +171,9 @@ GaringerOzone.monthly <-
 
 #separate line of code for month-year combinations
 #pipe to create a new column combining month and year columns
-#adding a 1 for the first day of every month
 GaringerOzone.monthly <-
   GaringerOzone.monthly %>%
-  mutate("firstmonth"=paste0("1", "-", month, "-", year))
-
-#converting firstmonth column into factor class
-GaringerOzone.monthly$firstmonth <- as.factor(GaringerOzone.monthly$firstmonth)
-
-#converting firstmonth column into a date format
-GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, format="%d-%m-%Y")
+  mutate("firstmonth"=my(paste0(month,"-",year)))
 
 ```
 
@@ -186,7 +182,6 @@ GaringerOzone.monthly$firstmonth <- as.Date(GaringerOzone.monthly$firstmonth, fo
 
 ```{r}
 #10
-
 Daily.GaringerOzone.ts <- ts(
   GaringerOzone$Daily.Max.8.hour.Ozone.Concentration,
   start=c(2010,1,1),end=c(2019,12,31),frequency=365) 
@@ -204,7 +199,6 @@ Monthly.GaringerOzone.ts <- ts(
 
 ```{r}
 #11
-
 Daily.GaringerOzone.ts.Decomposed <- stl(
   Daily.GaringerOzone.ts, s.window = "periodic") 
 #decomposing daily time series
@@ -223,7 +217,7 @@ plot(Monthly.GaringerOzone.ts.Decomposed) #plotting components
 ```{r}
 #12
 Trend.Monthly.GaringerOzone <- 
-  Kendall::SeasonalMannKendall(
+  SeasonalMannKendall(
   Monthly.GaringerOzone.ts)
 summary(Trend.Monthly.GaringerOzone)
 ```
@@ -239,6 +233,8 @@ Mean.Monthly.Ozone.Time.Plot <- ggplot(
     x=firstmonth, y=meanOzoneConcentration)) +
   geom_point() +
   geom_line() +
+  scale_x_date(date_breaks="6 months", labels=date_format("%d-%m-%Y")) +
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
   xlab(expression("Date")) +
   ylab(expression ("Mean Ozone Concentration (ppm)"))
 print(Mean.Monthly.Ozone.Time.Plot)
@@ -247,7 +243,7 @@ print(Mean.Monthly.Ozone.Time.Plot)
 
 14. To accompany your graph, summarize your results in context of the research question. Include output from the statistical test in parentheses at the end of your sentence. Feel free to use multiple sentences in your interpretation.
 
-> Answer: stationary?
+> Answer: The results of my trend analysis for monthly Ozone concentrations indicates that the seasonal trend is stationary (p=0.16323). This means that the trend is not decreasing or increasing. We can thus infer that the average monthly Ozone concentrations observed in the summer months (seasonally high periods of Ozone concentrations) have not risen over time compared to other summer months. Likewise, we can infer that the average monthly Ozone concentrations observed in the winter months (seasonally low periods of Ozone concentrations) have not decreased over time compared to other winter months.
 
 15. Subtract the seasonal component from the `GaringerOzone.monthly.ts`. Hint: Look at how we extracted the series components for the EnoDischarge on the lesson Rmd file.
 
@@ -255,13 +251,20 @@ print(Mean.Monthly.Ozone.Time.Plot)
 
 ```{r}
 #15
+Monthly.GaringerOzone.NonseasonalComponents <- as.data.frame(Monthly.GaringerOzone.ts.Decomposed$time.series[,2:3])
 
+Monthly.GaringerOzone.NonseasonalComponents <-
+  mutate(Monthly.GaringerOzone.NonseasonalComponents, Observed=GaringerOzone.monthly$meanOzoneConcentration, Date=GaringerOzone.monthly$firstmonth)
 
+Nonseasonal.ts <- ts(
+  Monthly.GaringerOzone.NonseasonalComponents, 
+  start=c(2010,1,1),end=c(2019,12,1),frequency=12) 
 
 #16
-
-
-
+Nonseasonal.Trend.Monthly.GaringerOzone <- 
+  MannKendall(
+  GaringerOzone.monthly_SeasonalComponents)
+summary(Nonseasonal.Trend.Monthly.GaringerOzone)
 
 ```
 
