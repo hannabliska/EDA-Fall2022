@@ -165,7 +165,7 @@ GaringerOzone.monthly <-
   GaringerOzone %>%
   mutate(month = month(Date)) %>% #adding month column
   mutate(year = year(Date)) %>% #adding a year column
-  group_by(month, year) %>% #grouping by month and year 
+  group_by(year,month) %>% #grouping by month and year 
   summarise(meanOzoneConcentration = mean(Daily.Max.8.hour.Ozone.Concentration)) #generating means
 
 #separate line of code for month-year combinations
@@ -183,12 +183,12 @@ GaringerOzone.monthly <-
 #10
 Daily.GaringerOzone.ts <- ts(
   GaringerOzone$Daily.Max.8.hour.Ozone.Concentration,
-  start=c(2010,1,1),end=c(2019,12,31),frequency=365) 
+  start=c(2010,1),frequency=365) 
 #daily measurements, using 365
 
 Monthly.GaringerOzone.ts <- ts(
   GaringerOzone.monthly$meanOzoneConcentration, 
-  start=c(2010,1,1),end=c(2019,12,1),frequency=12) 
+  start=c(2010,1),frequency=12) 
 #monthly measurements, using 12
 
 ```
@@ -243,7 +243,9 @@ print(Mean.Monthly.Ozone.Time.Plot)
 
 14. To accompany your graph, summarize your results in context of the research question. Include output from the statistical test in parentheses at the end of your sentence. Feel free to use multiple sentences in your interpretation.
 
-> Answer: The results of my trend analysis for monthly Ozone concentrations indicates that the seasonal data are stationary (p=0.16323). This means that there is not a trend in the data that is decreasing or increasing. We can thus infer that the average monthly Ozone concentrations observed in the summer months (seasonally high periods of Ozone concentrations) have not risen over time compared to other summer months. Likewise, we can infer that the average monthly Ozone concentrations observed in the winter months (seasonally low periods of Ozone concentrations) have not decreased over time compared to other winter months.
+> Answer: The results of my trend analysis for monthly Ozone concentrations indicates that the seasonal data are stationary (p=0.163). This means that there is not a trend in the data that is decreasing or increasing. We can thus infer that the average monthly Ozone concentrations observed in the summer months (seasonally high periods of Ozone concentrations) have not risen over time compared to other summer months. Likewise, we can infer that the average monthly Ozone concentrations observed in the winter months (seasonally low periods of Ozone concentrations) have not decreased over time compared to other winter months.
+#theres no significant trend in ozone over time 
+#see there is seasonal trend over time
 
 15. Subtract the seasonal component from the `GaringerOzone.monthly.ts`. Hint: Look at how we extracted the series components for the EnoDischarge on the lesson Rmd file.
 
@@ -254,11 +256,14 @@ print(Mean.Monthly.Ozone.Time.Plot)
 Monthly.GaringerOzone.NonseasonalComponents <- as.data.frame(Monthly.GaringerOzone.ts.Decomposed$time.series[,2:3])
 
 Monthly.GaringerOzone.NonseasonalComponents <-
-  mutate(Monthly.GaringerOzone.NonseasonalComponents, Observed=GaringerOzone.monthly$meanOzoneConcentration, Date=GaringerOzone.monthly$firstmonth)
+  Monthly.GaringerOzone.NonseasonalComponents %>%
+  mutate(data=trend + remainder) %>%
+  mutate(date=GaringerOzone.monthly$firstmonth) %>%
+  select(data,date)
 
 Nonseasonal.ts <- ts(
-  Monthly.GaringerOzone.NonseasonalComponents$Observed, 
-  start=c(2010,1,1),end=c(2019,12,1),frequency=12)
+  Monthly.GaringerOzone.NonseasonalComponents$data, 
+  start=c(2010,1),frequency=12)
 plot(Nonseasonal.ts)
 
 #16
@@ -269,3 +274,4 @@ summary(Nonseasonal.Trend.Monthly.GaringerOzone)
 ```
 
 > Answer: The results of my trend analysis for monthly Ozone concentrations without the seasonal component indicates that there is a trend in the data (p=< 2.2e-16). We reject the null hypothesis that the data are stationary and accept the alternative hypothesis that there is a trend because p<0.05. This is in comparison to the results of the Seasonal Mann test which indicated that there was no trend in the seasonal data (p>0.05).  
+#looking at the trend in ozone without considering seasonality, there will be a significant decline in ozone
