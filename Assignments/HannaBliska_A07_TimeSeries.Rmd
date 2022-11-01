@@ -222,7 +222,7 @@ Trend.Monthly.GaringerOzone <-
 summary(Trend.Monthly.GaringerOzone)
 ```
 
-> Answer: We ran a sesonal Mann-Kendall test because monthly ozone concentrations have  a seasonal cycle as demonstrated by the plot of the seasonal component produced in #11. A seaonal Mann-Kendall test is most appropriate for determining monotonic trends in data with seasonality.
+> Answer: We ran a sesonal Mann-Kendall test because monthly ozone concentrations have  a seasonal cycle as demonstrated by the plot of the seasonal component produced in #11. In the plot, the largest bar (on the right hand side) is found in the the seasonal component, indicating that the seasonal component explains most of the variability in the data. A seasonal Mann-Kendall test is most appropriate for determining monotonic trends in data with seasonality.
 
 13. Create a plot depicting mean monthly ozone concentrations over time, with both a geom_point and a geom_line layer. Edit your axis labels accordingly.
 
@@ -262,8 +262,7 @@ Nonseasonal.ts <- ts(
 
 #16
 Nonseasonal.Trend.Monthly.GaringerOzone <- 
-  MannKendall(
-  GaringerOzone.monthly_SeasonalComponents)
+  MannKendall(Nonseasonal.ts)
 summary(Nonseasonal.Trend.Monthly.GaringerOzone)
 
 ```
