@@ -104,7 +104,8 @@ GaringerOzone$Date <-as.Date(
 
 # 4
 #using select to wrangle dataset for specific columns
-GaringerOzone <- select(GaringerOzone, Date, Daily.Max.8.hour.Ozone.Concentration, DAILY_AQI_VALUE)
+GaringerOzone <- select(
+  GaringerOzone, Date, Daily.Max.8.hour.Ozone.Concentration, DAILY_AQI_VALUE)
 
 # 5
 #using `as.data.frame` to create a data frame
@@ -129,13 +130,17 @@ GaringerOzone <- left_join(Days, GaringerOzone, by = c("Date"))
 
 ```{r}
 #7
-Ozone_Line_Plot <- ggplot(GaringerOzone, aes(x=Date, y=Daily.Max.8.hour.Ozone.Concentration)) +
-  geom_line() +
+Ozone_Line_Plot <- ggplot(GaringerOzone, aes(
+  x=Date, y=Daily.Max.8.hour.Ozone.Concentration)) + 
+  #setting x and y axes
+  geom_line() + #creating line plot
   scale_x_date(date_breaks="1 year", labels=date_format("%Y")) +
-  xlab(expression("Date")) +
+  #using `scale_x_date` to set a break for each year 
+  xlab(expression("Date")) + #setting x axis label
   ylab(expression ("Maximum Ozone Concentration (ppm)")) +
-  geom_smooth(method=lm, se = FALSE, color="red")
-print(Ozone_Line_Plot)
+  #setting y axis label
+  geom_smooth(method=lm, se = FALSE, color="red") #adding linear trend
+print(Ozone_Line_Plot) #printing plot
 ```
 
 >Answer: The linear trend of my data suggests that ozone concentrations may have slightly decreased over time. The distribution of my data also suggests that there may be seasonal variation in my data, as shown by the up and down movement in the data that appears periodically.
@@ -150,7 +155,8 @@ Study question: Have ozone concentrations changed over the 2010s at this station
 #8
 GaringerOzone$Daily.Max.8.hour.Ozone.Concentration <- 
   na.approx(
-  GaringerOzone$Daily.Max.8.hour.Ozone.Concentration)
+  GaringerOzone$Daily.Max.8.hour.Ozone.Concentration) #using`na.approx`
+#to fill in missing daily data
 
 ```
 
@@ -166,14 +172,16 @@ GaringerOzone.monthly <-
   mutate(month = month(Date)) %>% #adding month column
   mutate(year = year(Date)) %>% #adding a year column
   group_by(year,month) %>% #grouping by year and month
-  summarise(meanOzoneConcentration = mean(Daily.Max.8.hour.Ozone.Concentration)) #generating means for ozone
+  summarise(meanOzoneConcentration = mean(Daily.Max.8.hour.Ozone.Concentration)) 
+#generating means for ozone
 #for each month of each year
 
 #separate line of code for month-year combinations
-#pipe to create a new column combining month and year columns
 GaringerOzone.monthly <-
-  GaringerOzone.monthly %>%
+  GaringerOzone.monthly %>% #pipe with mutate to create a new column 
+  #combining month and year columns
   mutate("firstmonth"=my(paste0(month,"-",year)))
+#paste0 allows me to ensure no spaces between month and year
 
 ```
 
@@ -185,11 +193,13 @@ GaringerOzone.monthly <-
 Daily.GaringerOzone.ts <- ts(
   GaringerOzone$Daily.Max.8.hour.Ozone.Concentration,
   start=c(2010,1),frequency=365) 
+#generating time series object
 #daily measurements, using 365
 
 Monthly.GaringerOzone.ts <- ts(
   GaringerOzone.monthly$meanOzoneConcentration, 
   start=c(2010,1),frequency=12) 
+#generating time series object
 #monthly measurements, using 12
 
 ```
@@ -231,14 +241,17 @@ summary(Trend.Monthly.GaringerOzone) #summary to display results
 # 13
 Mean.Monthly.Ozone.Time.Plot <- ggplot(
   GaringerOzone.monthly, aes(
-    x=firstmonth, y=meanOzoneConcentration)) +
-  geom_point() +
-  geom_line() +
+    x=firstmonth, y=meanOzoneConcentration)) + #setting axes
+  geom_point() + #generating scatter plot
+  geom_line() + #generating line plot
   scale_x_date(date_breaks="6 months", labels=date_format("%d-%m-%Y")) +
-  theme(axis.text.x=element_text(angle=60, hjust=1)) +
-  xlab(expression("Date")) +
-  ylab(expression ("Mean Ozone Concentration (ppm)"))
-print(Mean.Monthly.Ozone.Time.Plot)
+  #using `scale_x_date` to generate a break every 6 months
+  theme(axis.text.x=element_text(angle=60, hjust=1)) + 
+  #angle for the day-month-year labels
+  xlab(expression("Date")) + #setting x axis label
+  ylab(expression ("Mean Ozone Concentration (ppm)")) 
+#setting y axis label
+print(Mean.Monthly.Ozone.Time.Plot) #printing plot
 
 ```
 
@@ -252,23 +265,30 @@ print(Mean.Monthly.Ozone.Time.Plot)
 
 ```{r}
 #15
-Monthly.GaringerOzone.NonseasonalComponents <- as.data.frame(Monthly.GaringerOzone.ts.Decomposed$time.series[,2:3])
+Monthly.GaringerOzone.NonseasonalComponents <- as.data.frame(
+  Monthly.GaringerOzone.ts.Decomposed$time.series[,2:3]) 
+#extracting the trend and remainders, subtracting out seasonal
+#this will allow me to have a dataframe without seasonal data
 
 Monthly.GaringerOzone.NonseasonalComponents <-
   Monthly.GaringerOzone.NonseasonalComponents %>%
-  mutate(data=trend + remainder) %>%
-  mutate(date=GaringerOzone.monthly$firstmonth) %>%
-  select(data,date)
+  mutate(data=trend + remainder) %>% #creating a column with 
+  #trend and remainder summed together
+  mutate(date=GaringerOzone.monthly$firstmonth) %>% 
+  #adding date column
+  select(data,date) #selecting columns of interest
 
 Nonseasonal.ts <- ts(
   Monthly.GaringerOzone.NonseasonalComponents$data, 
-  start=c(2010,1),frequency=12)
-plot(Nonseasonal.ts)
+  start=c(2010,1),frequency=12) #generating time series object
+#from the new dataframe we made of nonseasonal data
+#frequency of 12 for 12 months per year
+plot(Nonseasonal.ts) #visualizing the non-seasonal time series
 
 #16
 Nonseasonal.Trend.Monthly.GaringerOzone <- 
-  MannKendall(Nonseasonal.ts)
-summary(Nonseasonal.Trend.Monthly.GaringerOzone)
+  MannKendall(Nonseasonal.ts) #using `MannKendall` for trend analysis
+summary(Nonseasonal.Trend.Monthly.GaringerOzone) #summary
 
 ```
 
