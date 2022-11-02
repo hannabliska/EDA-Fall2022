@@ -233,7 +233,7 @@ summary(Trend.Monthly.GaringerOzone) #summary to display results
 
 ```
 
-> Answer: We ran a sesonal Mann-Kendall test because monthly ozone concentrations have a seasonal cycle as demonstrated by the plot of the seasonal component produced in #11. In the plot for the seasonal component, a bar (though not the largest) is shown, indicating that the seasonal component explains some of the variability in the data. Because a seasonal Mann-Kendall test is most appropriate for determining monotonic trends in data with seasonality, which is the case for our data, we will use this test for our analysis. 
+> Answer: We ran a sesonal Mann-Kendall test because monthly ozone concentrations have a seasonal cycle as demonstrated by the plot of the seasonal component produced in #11. In the components plot, a relatively smaller bar is present in the seasonal plot compared to the trend plot, indicating that the seasonal component explains more of the variability in the data than the trend. Because a seasonal Mann-Kendall test is most appropriate for determining monotonic trends in data with seasonality, which is the case for our data, we will use this test for our analysis. 
 
 13. Create a plot depicting mean monthly ozone concentrations over time, with both a geom_point and a geom_line layer. Edit your axis labels accordingly.
 
@@ -261,7 +261,7 @@ print(Mean.Monthly.Ozone.Time.Plot) #printing plot
 
 15. Subtract the seasonal component from the `GaringerOzone.monthly.ts`. Hint: Look at how we extracted the series components for the EnoDischarge on the lesson Rmd file.
 
-16. Run the Mann Kendall test on the non-seasonal Ozone monthly series. Compare the results with the ones obtained with the Seasonal Mann Kendall on the complete series.
+16. Run the Mann Kendall test on the non-seasonal Ozone monthly series. Compare the results with the ones obtained with the Seasonal Mann Kendall on the complete series. 
 
 ```{r}
 #15
@@ -292,4 +292,4 @@ summary(Nonseasonal.Trend.Monthly.GaringerOzone) #summary
 
 ```
 
-> Answer: The results of my trend analysis for monthly Ozone concentrations without the seasonal component indicates that there is a trend in the data (p=0.0075). Thus, we can reject the null hypothesis that the data are stationary and accept the alternative hypothesis that there is a trend in the data. Thus, without considering seasonality in the data, there is a significant decline in mean monthly ozone concentrations. We can also see that by comparing the results of the Mann Kendall test on the non-seasonal data (p=0.0075) to the results of the Seasonal Mann Kendall test on the seasonal data (p=0.04) that the decreasing trend in mean monthly ozone concentrations is much more significant when the seasonality is removed.
+> Answer: The results of my trend analysis for monthly Ozone concentrations without the seasonal component indicates that there is a trend in the data (p=0.0075). Thus, we can reject the null hypothesis that the data are stationary and accept the alternative hypothesis that there is a trend in the data. Thus, without considering seasonality in the data, there is a significant decline in mean monthly ozone concentrations. We can also see that by comparing the results of the Mann Kendall test on the non-seasonal data (p=0.0075) to the results of the Seasonal Mann Kendall test on the seasonal data (p=0.04) that the decreasing trend in mean monthly ozone concentrations is much more significant when the seasonality is removed. This is likely because the seasonality of the data (with up and down cycles) diminishes the strength of the trend in the seasonal data; once removed, this trend is determined to be stronger.

@@ -128,9 +128,9 @@ Analysis of time series presents several opportunities. For environmental data, 
 
 Time series datasets come with several caveats, which need to be addressed in order to effectively model the system. A few common challenges that arise (and can occur together within a single dataset) are: 
 
-* **Autocorrelation**: Data points are not independent from one another (i.e., the measurement at a given time point is dependent on previous time point(s))
-* **Data gaps**: Data are not collected at regular intervals, necessitating *interpolation* between measurements.
-* **Seasonality**: seasonal patterns in variables occur at regular intervals, impeding clear interpretation of a monotonic (unidirectional) trend.
+* **Autocorrelation**: Data points are not independent from one another (i.e., the measurement at a given time point is dependent on previous time point(s)). #How is my observation in January correlated to my observations in December.
+* **Data gaps**: Data are not collected at regular intervals, necessitating *interpolation* between measurements. #Time series cannot use drop.na. If we were fitting time series models, we need to figure out a way to replace NAs. Linear interploation. If huge gap, split into early and late and just work with the late section. 
+* **Seasonality**: seasonal patterns in variables occur at regular intervals, impeding clear interpretation of a monotonic (unidirectional) trend. #Seasonality repeats over time. Could be associated with seasons of the year. Precipitation data shows wet seasons and dry seasons. 
 * **Heteroscedasticity**: The variance of the time series is not constant over time
 * **Covariance**: the covariance of the time series is not constant over time
 
@@ -162,6 +162,10 @@ EnoDischarge.late <- EnoDischarge.complete %>%
 ```
 
 ## Decomposing a time series dataset
+
+#first, always look at a line plot to see the behavior over time. also ID any gaps. When you do the line plot you can start observing if your data has a trend or a seasonal component. If you want to separate them, we can do a decomposition. Going to take observed series and divide into three (1 trend, 2, seasonal, 3, random.) This is what the stl function will show you. 
+
+#Bars are telling you the sense of relativeness. When you look at the data. The bar is representing the variability of that data set. The bar is more stretched for seasonal and trend. Seasonal is a smaller part when compared to full data. The bar is giving you the relativity of seasonal component compared to data. Larger the grey bar, the smaller is the variability. Seasonal component is bigger than the trend component. More explained by seasonality than the trend itself. 
 
 A given time series can be made up of several component series: 
 
@@ -226,6 +230,14 @@ Two types of trends may be present in our time series dataset: **monotonic/deter
 
 A third type of trend we haven't talked about is the **step** trend, also knows as a level shift. Step trends are a distinct shift at a given time point, for example in response to a policy being enacted. 
 
+##Monotonic trend always has the same direction, always upward or downward
+##Stochastic trend can change over time 
+
+##Original Mann Kendall cannot test for seasonal data. B/c the seasonal data makes value go up and down. That can blur the overall trend of the series. (WHY IT EXPLAINS SO MUCH VARIABILITY!! BUT NOT EXPLAINING UP OR DOWN TREND) So, we decompose the series, remove the seasonal, and run on the non-seasonal data. 
+
+##Seasonal MK will run for each month of the year. Look for trends on each sason. Problem: some seasons getting wetter and some are getting drier. 
+
+##Not the same to run the mann kendall and the seasonal mann kendall. 
 
 ### Monotonic trend analysis
 
@@ -287,6 +299,10 @@ Specific test for stochastic trend analysis:
 Let's refer to our wind speed data. We already performed interpolation, but we still need to create our time series object and decompose the series to find out which stationarity test we can apply. 
 
 Note that wind speed has a seasonal cycle. We might be interested in knowing how (if) speed has changed over the course of measurement while incorporating the seasonal component. In this case, we will use a Seasonal Mann-Kendall test to figure out whether a monotonic trend exists.
+
+#when we create a time series object, this must be run on ts. But ggplot cannot be run on ts, use data frames for the viz part.
+
+##mann kendall s is positive (increasing)
 
 
 ```{r}
