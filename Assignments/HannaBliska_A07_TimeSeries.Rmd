@@ -138,7 +138,7 @@ Ozone_Line_Plot <- ggplot(GaringerOzone, aes(x=Date, y=Daily.Max.8.hour.Ozone.Co
 print(Ozone_Line_Plot)
 ```
 
->Answer: The linear trend of my data suggests that ozone concentrations may have slightly decreased over time, but that there is no significant upward or downward trend. However, the distribution of my data suggests that there may be seasonal variation in my data, as shown by the up and down movement in the data that appears periodically.
+>Answer: The linear trend of my data suggests that ozone concentrations may have slightly decreased over time. The distribution of my data also suggests that there may be seasonal variation in my data, as shown by the up and down movement in the data that appears periodically.
 
 ## Time Series Analysis
 
@@ -154,7 +154,7 @@ GaringerOzone$Daily.Max.8.hour.Ozone.Concentration <-
 
 ```
 
-> Answer: We used a linear interpolation because we wanted to fill our NA values with ozone concentrations that fall between the previous and next measurement of ozone concentrations. This makes sense given that we have relatively few, and infrequent, NAs. We did not use the piecewise constant method because this method would replace NAs with values equal to the measurement made nearest to that date, which would cause replicates in our ozone concentrations between two days rather than our desired measurement that would fall between the concentrations of two days and follows the trend of our data. Similarly, we did not use the spline interpolation because it uses a quadratic function to interpolate NAs; given the up and down linear distribution of our data, it is more logical to use a linear function to interpolate NAs rather than a quadratic function. 
+> Answer: We used a linear interpolation because we wanted to fill our NA values with ozone concentrations that fall between the previous and next measurement of ozone concentrations. This makes sense given that we have relatively few, and infrequent, NAs. We did not use the piecewise constant method because this method would replace NAs with values equal to the measurement made nearest to that date, which would cause replicates in our ozone concentrations between two days rather than our desired measurement -- which would fall between the concentrations of two days and follows the trend of our data. Similarly, we did not use the spline interpolation because it uses a quadratic function to interpolate NAs; given that the distribution of our data linearily increases and then decreases over the seasons, it is more logical to use a linear function to interpolate NAs rather than a quadratic function. 
 
 9. Create a new data frame called `GaringerOzone.monthly` that contains aggregated data: mean ozone concentrations for each month. In your pipe, you will need to first add columns for year and month to form the groupings. In a separate line of code, create a new Date column with each month-year combination being set as the first day of the month (this is for graphing purposes only)
 
@@ -165,8 +165,9 @@ GaringerOzone.monthly <-
   GaringerOzone %>%
   mutate(month = month(Date)) %>% #adding month column
   mutate(year = year(Date)) %>% #adding a year column
-  group_by(year,month) %>% #grouping by month and year 
-  summarise(meanOzoneConcentration = mean(Daily.Max.8.hour.Ozone.Concentration)) #generating means
+  group_by(year,month) %>% #grouping by year and month
+  summarise(meanOzoneConcentration = mean(Daily.Max.8.hour.Ozone.Concentration)) #generating means for ozone
+#for each month of each year
 
 #separate line of code for month-year combinations
 #pipe to create a new column combining month and year columns
@@ -217,12 +218,12 @@ plot(Monthly.GaringerOzone.ts.Decomposed) #plotting components
 #12
 Trend.Monthly.GaringerOzone <- 
   SeasonalMannKendall(
-  Monthly.GaringerOzone.ts)
-summary(Trend.Monthly.GaringerOzone)
+  Monthly.GaringerOzone.ts) #running seasonal Mann-Kendall
+summary(Trend.Monthly.GaringerOzone) #summary to display results
 
 ```
 
-> Answer: We ran a sesonal Mann-Kendall test because monthly ozone concentrations have  a seasonal cycle as demonstrated by the plot of the seasonal component produced in #11. In the plot, the largest bar (on the right hand side) is found in the the seasonal component, indicating that the seasonal component explains most of the variability in the data. A seasonal Mann-Kendall test is most appropriate for determining monotonic trends in data with seasonality.
+> Answer: We ran a sesonal Mann-Kendall test because monthly ozone concentrations have a seasonal cycle as demonstrated by the plot of the seasonal component produced in #11. In the plot for the seasonal component, a bar (though not the largest) is shown, indicating that the seasonal component explains some of the variability in the data. Because a seasonal Mann-Kendall test is most appropriate for determining monotonic trends in data with seasonality, which is the case for our data, we will use this test for our analysis. 
 
 13. Create a plot depicting mean monthly ozone concentrations over time, with both a geom_point and a geom_line layer. Edit your axis labels accordingly.
 
@@ -243,9 +244,7 @@ print(Mean.Monthly.Ozone.Time.Plot)
 
 14. To accompany your graph, summarize your results in context of the research question. Include output from the statistical test in parentheses at the end of your sentence. Feel free to use multiple sentences in your interpretation.
 
-> Answer: The results of my trend analysis for monthly Ozone concentrations indicates that the seasonal data are stationary (p=0.163). This means that there is not a trend in the data that is decreasing or increasing. We can thus infer that the average monthly Ozone concentrations observed in the summer months (seasonally high periods of Ozone concentrations) have not risen over time compared to other summer months. Likewise, we can infer that the average monthly Ozone concentrations observed in the winter months (seasonally low periods of Ozone concentrations) have not decreased over time compared to other winter months.
-#theres no significant trend in ozone over time 
-#see there is seasonal trend over time
+> Answer: The results of my trend analysis for monthly Ozone concentrations indicates that there is a trend in the seasonal data (p=0.04). From the plot in #13, we can see that monthly ozone concentrations have a slightly decreasing trend over time. This is particularly visible when comparing the summer seasonal data over time; we can see that in 2010 and 2011, the mean monthly ozone concentrations in the summer months were higher than those in the summer months of 2017-2019. Thus, we can reject the null hypothesis that the data are stationary and accept the alternative hypothesis that there is a trend in the seasonal data.
 
 15. Subtract the seasonal component from the `GaringerOzone.monthly.ts`. Hint: Look at how we extracted the series components for the EnoDischarge on the lesson Rmd file.
 
@@ -273,5 +272,4 @@ summary(Nonseasonal.Trend.Monthly.GaringerOzone)
 
 ```
 
-> Answer: The results of my trend analysis for monthly Ozone concentrations without the seasonal component indicates that there is a trend in the data (p=< 2.2e-16). We reject the null hypothesis that the data are stationary and accept the alternative hypothesis that there is a trend because p<0.05. This is in comparison to the results of the Seasonal Mann test which indicated that there was no trend in the seasonal data (p>0.05).  
-#looking at the trend in ozone without considering seasonality, there will be a significant decline in ozone
+> Answer: The results of my trend analysis for monthly Ozone concentrations without the seasonal component indicates that there is a trend in the data (p=0.0075). Thus, we can reject the null hypothesis that the data are stationary and accept the alternative hypothesis that there is a trend in the data. Thus, without considering seasonality in the data, there is a significant decline in mean monthly ozone concentrations. We can also see that by comparing the results of the Mann Kendall test on the non-seasonal data (p=0.0075) to the results of the Seasonal Mann Kendall test on the seasonal data (p=0.04) that the decreasing trend in mean monthly ozone concentrations is much more significant when the seasonality is removed.
