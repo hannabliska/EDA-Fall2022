@@ -162,20 +162,23 @@ ts.temp.components <-
 
 ts.temp.components <-
   ts.temp.components %>%
-  mutate(date=BRA_complete$Date) %>%
-  mutate(observed=BRA_complete$Temperature_C)
+  mutate(date=BRA_complete$Date) %>% #add date
+  mutate(observed=BRA_complete$Temperature_C) #add observed
 
 # Exercise 10: Visualize how the trend maps onto the data for both series
+#observed = trend + seasonality
+
+Trend.Plot.Temp <- ggplot(ts.temp.components) +
+  geom_line(aes(x = date, y = observed)) +
+  geom_line(aes(x = date, y = trend), color="red") +
+  ylab("Temperature")
+print(Trend.Plot.Temp)
 
 Trend.Plot.Rain <- ggplot(ts.rainfall.components) +
-  geom_point(aes(x= date, y = observed)) +
-  geom_point(aes(x = date, y = trend)) +
+  geom_line(aes(x = date, y = observed)) +
+  geom_line(aes(x = date, y = trend), color="red") +
+  ylab("Rain")
 print(Trend.Plot.Rain)
-
-Trend.Plot.Temp <- 
-
-
-
 
 ```
 
