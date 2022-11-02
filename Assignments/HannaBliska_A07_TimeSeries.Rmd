@@ -283,7 +283,6 @@ Nonseasonal.ts <- ts(
   start=c(2010,1),frequency=12) #generating time series object
 #from the new dataframe we made of nonseasonal data
 #frequency of 12 for 12 months per year
-plot(Nonseasonal.ts) #visualizing the non-seasonal time series
 
 #16
 Nonseasonal.Trend.Monthly.GaringerOzone <- 
