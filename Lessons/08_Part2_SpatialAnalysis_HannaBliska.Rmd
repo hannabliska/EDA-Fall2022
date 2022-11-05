@@ -119,19 +119,19 @@ mapView(counties_sf, zcol = "ALAND")
 
 ```{r read HUCs shapefile}
 #Read the shapefile into an sf dataframe named "huc8_sf"
-
+huc8_sf <- st_read('./Data/Spatial/NCHUC8.shp')
 
 #Reveal the columns
-
+colnames(huc8_sf)
 
 #Check the CRS
-
+st_crs(huc8_sf)
 
 #Examine some records
 head(huc8_sf)
 
 #View the data as a map, colored by the acreage in each
-
+mapview(huc8_sf, zcol="ACRES")
 
 
 
@@ -143,11 +143,12 @@ head(huc8_sf)
 
 ```{r Select the Upper Neuse HUC 8}
 #Read the shapefile into an sf dataframe
-
+huc8_sf_Upper <- st_read('./Data/Spatial/NCHUC8.shp') %>%
+  filter(SUBBASIN == "Upper Neuse")
 
 
 #Create a map
-
+mapview(huc8_sf_Upper)
 
 
 
@@ -198,7 +199,7 @@ ggplot(nc_powerplants_sf) +
 
 ## 3.1 Joining attributes to spatial features
 
-Joining data to spatial features works the same as joining tables: we just need a common attribute to link the two datasets. Here, we'll add demographic data to our Census county feature, using the State&County FIPS code as the common attributes.
+Joining data to spatial features works the same as joining tables: we just need a common attribute to link the two datasets. Here, we'll add demographic data to our Census county feature, using the State&County FIPS code as the common attributes. #looks for common attribute
 
 The data we'll add here is the CDC's Social Vulnerability Index data. Information on this dataset is available here:
 
@@ -223,6 +224,7 @@ counties_sf_join <-  merge(x = counties_sf,
                            y = svi2018_nc_raw, 
                            by.x = "GEOID", 
                            by.y = "FIPS" )
+#specify the two columns we are usign to join them together
 
 #Tidyverse version of the join
 counties_sf_join <- counties_sf %>% 
@@ -246,24 +248,21 @@ ggplot() +
 
 ```{r}
 #Compute HUC8 wind energy
+huc8_wind <- read.csv('https://raw.githubusercontent.com/ENV859/EnviroAtlasData/main/Wind_Energy.csv',
+  colClasses = c('HUC_12' = 'factor')) %>%
+  mutate(HUC_8=substr(HUC_12,1,8)) %>% #specify a string
+  #grab from the 1st to the 8th value within HUC_12
+  group_by(HUC_8) %>%
+  summarize(kWhkm2day=sum(kWhkm2day))
 
-
-
-
-
-  
 #Join to HUC_8 features
-
-
-
-
+huc8_wind_sf_join <- merge(x=huc8_sf,
+                           y=huc8_wind,
+                           by.x="HUC_8",
+                           by.y="HUC_8")
 
 #View the outputs
-
-
-
-
-
+mapview(huc8_wind_sf_join, zcol="kWhkm2day")
 
 
 ```
@@ -282,6 +281,19 @@ state_sf <- counties_sf %>%
 
 #View the data
 mapview(state_sf)
+
+#now trying for hucs
+agg_huc8 <- huc8_sf %>%
+  group_by(DWQ_Basin) %>%
+  summarize(ACRES=sum(ACRES), 
+            SQ_MILES=sum(SQ_MILES)
+            )
+
+ggplot() +
+  geom_sf(data=agg_huc8,aes(fill=ACRES))
+
+mapview(agg_huc8, zcol="DWQ_Basin")
+
 ```
 
 *Now you try*: Aggregate the HUC_8 data on the `DWQ_Basin` attribute, computing the sum of the `ACRES` and `SQ_MILES` field and view the result.
@@ -364,8 +376,9 @@ neuse_intersect_2 <- counties_sf_utm %>%
 myMap + mapview(neuse_intersect_2, alpha.regions = 0)
 
 #Actually intersect the counties (not just select those that intersect)
-neuse_counties_sf <- neuse_sf %>% 
-  st_intersection(counties_sf_utm)
+#chop off
+neuse_counties_sf <- neuse_sf %>% #cookie cutter
+  st_intersection(counties_sf_utm) #cookie dough
 myMap + mapview(neuse_counties_sf, alpha.regions = 0)
 
 #Update the area the features, now that some are clipped
@@ -380,16 +393,23 @@ mapview(neuse_counties_sf, zcol='Area_m2')
 
 ```{r EXERCISE: Clipping}
 #Select the Triangle County from the 
-
+the_triangle <- counties_sf_utm %>%
+  filter(NAME=="Durham" | NAME=="Chatham" | NAME=="Orange" | NAME=="Wake")
 
   
 #Grab the intersecting HUC_8s
+the_hucs <- huc8_sf_utm[the_triangle,]
+#what you are intersecting #with what
 
 
+#Intersect the HUC_8s NOT CORRECT! #ask in class
+hucs_within <- the_triangle %>% #cookie cutter
+  st_intersection(huc8_sf_utm) #cookie dough
 
-#Intersect the HUC_8s
-
-
+hucs_within <- huc2_utm %>%
+   st_intersection(the_triangle)
+#why is it ordered like this
+#correct
 
 ```
 
@@ -474,11 +494,19 @@ mapView(counties_sf[resultMask,])
 > Questions: how might we use the `st_buffer` function to show all counties within 30km of the site?
 
 ```{r Select counties within a 30 km area from the site}
-the_site_counties <- theSite_sfc_transformed %>% 
-  st_buffer(.,dist=30000)
+#the_site_counties <- theSite_sfc_transformed %>% 
+  #st_buffer(.,dist=30000)
 
+site_30km <- st_buffer(theSite_sfc_transformed, 30000)
+mapview(site_30km)
+   
+result_Mask30km <- st_intersects(counties_sf_utm,
+                                 site_30km,
+                                 sparse=FALSE)    
 
-                            
+selCounties_30km <-counties_sf_utm[result_Mask30km,]
+mapview(selCounties_30km)
+
 ```
 
 # 4. VISUALIZATION
