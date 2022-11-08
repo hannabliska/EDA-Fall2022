@@ -239,13 +239,20 @@ Now let's zoom into a particular county and examine the gages located there.
 
 ```{r}
 #22 Select the county
-
+lancaster_sf <- NE_counties_sf_UTM %>%
+  filter(NAME == "Lancaster")
 
 #23 Select gages within the selected county
-
+gage_within_lancaster_sf <- gage_joined_sf_UTM[lancaster_sf,]
 
 #24 Plot
-
-
-
+lancaster_gage_plot <- ggplot() +
+  geom_sf(data=NE_counties_sf_UTM, color="blue") +
+  geom_sf(data=lancaster_sf, color="red") +
+  geom_sf(data=gage_within_lancaster_sf, color="purple", size=0.7) +
+  ylab(expression("Latitude (°N)")) + #setting y axis label
+  xlab(expression("Longitude (°W) ")) + #setting x axis label
+  ggtitle(expression(
+    "NWIS Gage Locations in Lancaster County, NE")) #adding title and subtitle
+print(lancaster_gage_plot)
 ```
