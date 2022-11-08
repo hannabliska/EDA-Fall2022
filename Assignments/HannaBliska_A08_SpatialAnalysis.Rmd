@@ -129,7 +129,7 @@ colnames(gage_locations_sf)
 #13. Plot the gage locations atop the county features
 gage_ne_plot <- ggplot() +
   geom_sf(data=NE_counties_sf, color="blue") + #county data
-  geom_sf(data=gage_locations_sf, color="red") + #location data
+  geom_sf(data=gage_locations_sf,color="red") + #location data
   ylab(expression("Latitude (°N)")) + #setting y axis label
   xlab(expression("Longitude (°W) ")) + #setting x axis label
   ggtitle(expression(
@@ -182,13 +182,17 @@ Now we can examine where the flooding appears most acute by visualizing gage hei
 
 ```{r}
 #Map the points, sized by gage height
-#mapview(NE_counties_sf) + 
-  #mapview(gage_joined_sf, cex = 'gage_ht', color="red")
-
 gage_height_plot <- ggplot() +
-  geom_sf(data = NE_counties_sf, color = 'blue')  +
-  geom_sf(data = gage_joined_sf, aes(fill = gage_ht), size=2) + 
-  scale_fill_gradient(low="yellow", high="darkgreen")
+  geom_sf(data = NE_counties_sf, color = 'blue') + #setting counties first
+  geom_sf(data = gage_joined_sf, aes(fill = gage_ht), pch=21, size=2) + 
+  #using fill to set a gradient for gage height
+  #pch allows me to make the shapes hollow to fill
+  scale_fill_gradient(low="yellow", high="darkgreen") + #setting gradient colors
+  ylab(expression("Latitude (°N)")) + #setting y axis label
+  xlab(expression("Longitude (°W) ")) + #setting x axis label
+  labs(fill="Gage Height (m)") +
+  ggtitle(expression(
+    "NWIS Gage Height Measurements in Nebraska")) #adding title and subtitle
 print(gage_height_plot)
 ```
 
@@ -206,11 +210,19 @@ Up next we will do some spatial analysis with our data. To prepare for this, we 
 
 ```{r}
 #20 Transform the counties and gage location datasets to UTM Zone 14
-
+NE_counties_sf_UTM <- st_transform(NE_counties_sf, c=32614)
+gage_joined_sf_UTM <- st_transform(gage_joined_sf, c=32614)
 
 #21 Plot the data
-
-
+gage_ne_utm_plot <- ggplot() +
+  geom_sf(data=NE_counties_sf_UTM, color="blue") + #county data
+  geom_sf(data=gage_joined_sf_UTM, color="red") + #location data
+  ylab(expression("Latitude (°N)")) + #setting y axis label
+  xlab(expression("Longitude (°W) ")) + #setting x axis label
+  ggtitle(expression(
+    "NWIS Gage Locations in Nebraska (UTM Zone 14N)"), 
+    subtitle="Hanna Bliska") #adding title and subtitle
+print(gage_ne_utm_plot)
 ```
 
 
