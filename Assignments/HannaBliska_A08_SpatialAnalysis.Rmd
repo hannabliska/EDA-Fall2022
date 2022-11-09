@@ -165,6 +165,9 @@ gage_joined_sf <- merge(x = gage_locations_sf,
                      y = gage_heights, 
                      by.x = "site_no",
                      by.y = "site_no")
+#site_no present in both datasets
+#specifying site_no as the columns through which to join 
+#the datasets to one dataframe
 
 #17. Show the column names of the joined dataset
 colnames(gage_joined_sf)
@@ -192,7 +195,7 @@ gage_height_plot <- ggplot() +
   xlab(expression("Longitude (°W) ")) + #setting x axis label
   labs(fill="Gage Height (m)") +
   ggtitle(expression(
-    "NWIS Gage Height Measurements in Nebraska")) #adding title and subtitle
+    "NWIS Gage Height Measurements in Nebraska")) #adding title
 print(gage_height_plot)
 ```
 
@@ -212,6 +215,7 @@ Up next we will do some spatial analysis with our data. To prepare for this, we 
 #20 Transform the counties and gage location datasets to UTM Zone 14
 NE_counties_sf_UTM <- st_transform(NE_counties_sf, c=32614)
 gage_joined_sf_UTM <- st_transform(gage_joined_sf, c=32614)
+#using st_tranform to transform datasets, using EPGS code for UTM Zone 14
 
 #21 Plot the data
 gage_ne_utm_plot <- ggplot() +
@@ -240,19 +244,23 @@ Now let's zoom into a particular county and examine the gages located there.
 ```{r}
 #22 Select the county
 lancaster_sf <- NE_counties_sf_UTM %>%
-  filter(NAME == "Lancaster")
+  filter(NAME == "Lancaster") 
+#using filter to select only Lancaster county
 
 #23 Select gages within the selected county
 gage_within_lancaster_sf <- gage_joined_sf_UTM[lancaster_sf,]
+#using matrix subsetting to select gages within Lancaster
+#placing the "cookie cutter" inside the brackets
 
 #24 Plot
 lancaster_gage_plot <- ggplot() +
-  geom_sf(data=NE_counties_sf_UTM, color="blue") +
-  geom_sf(data=lancaster_sf, color="red") +
-  geom_sf(data=gage_within_lancaster_sf, color="purple", size=0.7) +
+  geom_sf(data=NE_counties_sf_UTM, color="blue") + #county data
+  geom_sf(data=lancaster_sf, color="red") + #Lancaster data
+  geom_sf(data=gage_within_lancaster_sf, color="purple", size=0.7) + 
+  #gages within Lancaster data
   ylab(expression("Latitude (°N)")) + #setting y axis label
   xlab(expression("Longitude (°W) ")) + #setting x axis label
   ggtitle(expression(
-    "NWIS Gage Locations in Lancaster County, NE")) #adding title and subtitle
+    "NWIS Gage Locations in Lancaster County, NE")) #adding title
 print(lancaster_gage_plot)
 ```
