@@ -129,7 +129,7 @@ colnames(gage_locations_sf)
 ```{r Plot the spatial features}
 #13. Plot the gage locations atop the county features
 gage_ne_plot <- ggplot() +
-  geom_sf(data=NE_counties_sf, color="blue") + #county data
+  geom_sf(data=NE_counties_sf,color="blue") + #county data
   geom_sf(data=gage_locations_sf,color="red") + #location data
   ylab(expression("Latitude (°N)")) + #setting y axis label
   xlab(expression("Longitude (°W) ")) + #setting x axis label
