@@ -80,11 +80,11 @@ mapView(counties_sf, zcol = "AWATER")
 
 ```{r read HUCs shapefile}
 #Read the shapefile into an sf dataframe named "huc8_sf"
-
+huc8_sf <- st_read("./Data/Spatial/NCHUC8.shp")
 
 
 #View the data as a map, colored by the acreage in each
-
+mapview(huc8_sf, zcol="ACRES")
 
 ```
 
@@ -94,11 +94,13 @@ mapView(counties_sf, zcol = "AWATER")
 
 ```{r Select the Upper Neuse HUC 8}
 #Read the shapefile into an sf dataframe
-
+Upper_Neuse <- st_read("./Data/Spatial/NCHUC8.shp") %>%
+  filter(SUBBASIN == "Upper Neuse")
 
 
 #Create a map
-
+mapview(Upper_Neuse, col.regions ="purple") + 
+  mapview(huc8_sf, col.regions = "orange")
 
 ```
 
@@ -115,17 +117,26 @@ The URL '<https://raw.githubusercontent.com/ENV859/EnviroAtlasData/main/Wind_Ene
 ```{r}
 #Compute HUC8 wind energy
 
-
-
+huc8_windenergy_updated <- read.csv(
+  "https://raw.githubusercontent.com/ENV859/EnviroAtlasData/main/Wind_Energy.csv", colClasses=c('HUC_12' = 'factor')) %>%
+  mutate(HUC_8=substr(HUC_12,0,8)) %>%
+  group_by(HUC_8) %>%
+  summarize(AvgWindEnergy=sum(AvgWindEnergy))
 
 #Join to HUC_8 features
+joined_huc_wind <- merge(x=huc8_sf,
+                         y=huc8_windenergy_updated,
+                         by.x="HUC_8",
+                         by.y="HUC_8")
 
-
-
+#joined_huc_wind_sf <- st_as_sf(joined_huc_wind,)
 
 #View the outputs
+mapview(joined_huc_wind, zcol="AvgWindEnergy")
 
-
+#View the outputs
+ggplot(data=huc8_windenergy_updated) +
+  geom_sf(aes(fill=AvgWindEnergy))
 
 ```
 
@@ -134,15 +145,15 @@ Aggregate the HUC_8 data on the `DWQ_Basin` attribute, computing the sum of the 
 
 ```{r Aggregate the HUC data on an attribute, saving as huc2_sf}
 #List the unique values in the DWQ_Basin field
-
-
+unique(huc8_sf$DWQ_Basin)
 
 #Summarize on DWQ Basin value
-
-
+DWQ_Basin <- huc8_sf %>%
+  group_by(DWQ_Basin) %>%
+  summarize(ACRES=sum(ACRES), SQ_MILES=sum(SQ_MILES))
 
 #Map the data
-
+ggplot() + geom_sf(data=DWQ_Basin, aes(fill=ACRES))
 
 ```
 
@@ -154,7 +165,7 @@ On top of projecting any geographic data to adjust for the limitations of the so
 
 ```{r Transform the datasets to other coordinate reference systems}
 #Convert all to UTM Zone 17 (crs = 26917)
-epa_sf_utm <-      st_transform(epa_pm25_sites_sf, crs = 26917)
+epa_sf_utm <- st_transform(epa_pm25_sites_sf, crs = 26917)
 counties_sf_utm <- 
 state_sf_utm <-    
 huc8_sf_utm <-     
@@ -174,6 +185,8 @@ Select the counties in the "Triangle" (Chatham, Durham, Orange, and Wake). Then 
   
 #Grab the intersecting HUC_8s
 
+#cutter goes inside
+#dough goes outside
 
 
 #Intersect the HUC_8s
