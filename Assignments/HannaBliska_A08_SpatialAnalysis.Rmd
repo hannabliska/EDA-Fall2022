@@ -102,7 +102,8 @@ colnames(gage_locations)
 
 ```{r Convert dataframe to sf dataframe}
 #10. Convert to an sf object
-gage_locations_sf <- st_as_sf(gage_locations, coords = c('dec_long_va','dec_lat_va'), crs=4269)
+gage_locations_sf <- st_as_sf(
+  gage_locations, coords = c('dec_long_va','dec_lat_va'), crs=4269)
 #using st_as_sf to convert to sf object
 #specifying the x and y coordinates as longitude and latitude
 #specifying the CRS to be 4269
