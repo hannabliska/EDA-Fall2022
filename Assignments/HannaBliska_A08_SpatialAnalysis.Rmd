@@ -57,6 +57,7 @@ NE_counties_sf <- st_read(
 
 #4. Reveal the CRS of the counties features
 st_crs(NE_counties_sf)
+#using st_crs to show CRS (NAD 83)
 
 #5. Plot the data
 mapview(NE_counties_sf)
@@ -65,9 +66,8 @@ mapview(NE_counties_sf)
 
 6. What is the EPSG code of the Counties dataset? Is this a geographic or a projected coordinate reference system? (Or, does this CRS use angular or planar coordinate units?) To what datum is this CRS associated? (Tip: look the EPSG code on <https://spatialreference.org>) 
 
-> ANSWER: The EPSG code of the Counties dataset is 4269. This CRS uses angular coordinate units, as the coordinate reference system is WGS84, which is a geographic coordinate reference system. The datum is NAD 1983. 
+> ANSWER: The EPSG code of the Counties dataset is 4269. This CRS uses angular coordinate units because it is a geographic coordinate reference system. The datum is NAD 1983. 
 > 
-
 
 ### Read in gage locations csv as a dataframe, then display the column names it contains
 
@@ -115,7 +115,7 @@ colnames(gage_locations_sf)
 
 12. What new field(s) appear in the sf dataframe created? What field(s), if any, disappeared?
 
->ANSWER: A new field appeared in the sf dataframe, named "geometry." This field contains the x and y coordinates for each gage location. The dec_long_va and dec_lat_va columns dissappeared; this is because these two columns were incorporated into the geometry column as the x (longitude) and y (latitude) coordinates for each gauge location. 
+>ANSWER: A new field appeared in the sf dataframe, named "geometry." This field contains the x and y coordinates (spatial data) for each gage location. The dec_long_va and dec_lat_va columns dissappeared; this is because these two columns were incorporated into the geometry column as the x (longitude) and y (latitude) coordinates for each gage location. 
 >
 
 
@@ -169,6 +169,7 @@ gage_joined_sf <- merge(x = gage_locations_sf,
 #site_no present in both datasets
 #specifying site_no as the columns through which to join 
 #the datasets to one dataframe
+#merge only includes spatial features where both tables have data
 
 #17. Show the column names of the joined dataset
 colnames(gage_joined_sf)
@@ -196,7 +197,8 @@ gage_height_plot <- ggplot() +
   xlab(expression("Longitude (°W) ")) + #setting x axis label
   labs(fill="Gage Height (m)") +
   ggtitle(expression(
-    "NWIS Gage Height Measurements in Nebraska")) #adding title
+    "NWIS Gage Height Measurements Post Flood Event in Nebraska"), 
+    subtitle="Hanna Bliska") #adding title and subtitle
 print(gage_height_plot)
 ```
 
@@ -257,11 +259,12 @@ gage_within_lancaster_sf <- gage_joined_sf_UTM[lancaster_sf,]
 lancaster_gage_plot <- ggplot() +
   geom_sf(data=NE_counties_sf_UTM, color="blue") + #county data
   geom_sf(data=lancaster_sf, color="red") + #Lancaster data
-  geom_sf(data=gage_within_lancaster_sf, color="purple", size=0.7) + 
+  geom_sf(data=gage_within_lancaster_sf, color="purple", size=1) + 
   #gages within Lancaster data
   ylab(expression("Latitude (°N)")) + #setting y axis label
   xlab(expression("Longitude (°W) ")) + #setting x axis label
   ggtitle(expression(
-    "NWIS Gage Locations in Lancaster County, NE")) #adding title
+    "NWIS Gage Locations in Lancaster County, NE"), 
+    subtitle="Hanna Bliska") #adding title and subtitle
 print(lancaster_gage_plot)
 ```
