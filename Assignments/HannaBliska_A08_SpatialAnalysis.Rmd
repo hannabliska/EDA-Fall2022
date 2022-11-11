@@ -1,11 +1,13 @@
 ---
-title: "Assignment 8: Spatial Analysis in R"
+title: 'Assignment 8: Spatial Analysis in R'
 author: "Hanna Bliska"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 geometry: margin=2.54cm
-editor_options: 
+editor_options:
   chunk_output_type: console
-  markdown: 
+  markdown:
     wrap: 72
 ---
 
@@ -56,8 +58,7 @@ NE_counties_sf <- st_read(
   filter(STATEFP==31)
 
 #4. Reveal the CRS of the counties features
-st_crs(NE_counties_sf)
-#using st_crs to show CRS (NAD 83)
+st_crs(NE_counties_sf) #using st_crs to show CRS (NAD 83)
 
 #5. Plot the data
 mapview(NE_counties_sf)
@@ -89,8 +90,8 @@ colnames(gage_locations)
 ```
 
 9. What columns in the dataset contain the x and y coordinate values, respectively?  
-> ANSWER:
-> The x coordinate values are found in the the column containing longitude, dec_long_va. The y coordiante values are found in the column containing latitude, dec_lat_va.
+
+> ANSWER: The x coordinate values are found in the the column containing longitude, dec_long_va. The y coordinate values are found in the column containing latitude, dec_lat_va.
 
 
 ### Convert the dataframe to a spatial features ("sf") dataframe
@@ -115,8 +116,7 @@ colnames(gage_locations_sf)
 
 12. What new field(s) appear in the sf dataframe created? What field(s), if any, disappeared?
 
->ANSWER: A new field appeared in the sf dataframe, named "geometry." This field contains the x and y coordinates (spatial data) for each gage location. The dec_long_va and dec_lat_va columns dissappeared; this is because these two columns were incorporated into the geometry column as the x (longitude) and y (latitude) coordinates for each gage location. 
->
+> ANSWER:  A new field appeared in the sf dataframe, named "geometry." This field contains the x and y coordinates (spatial data) for each gage location. The dec_long_va and dec_lat_va columns dissappeared; this is because these two columns were incorporated into the new geometry column as the x (longitude) and y (latitude) coordinates for each gage location. 
 
 
 ### Plot the gage locations on top of the counties
@@ -166,9 +166,8 @@ gage_joined_sf <- merge(x = gage_locations_sf,
                      y = gage_heights, 
                      by.x = "site_no",
                      by.y = "site_no")
-#site_no present in both datasets
-#specifying site_no as the columns through which to join 
-#the datasets to one dataframe
+#note site_no column is present in both datasets
+#specifying site_no as the columns through which to join the datasets to one dataframe
 #merge only includes spatial features where both tables have data
 
 #17. Show the column names of the joined dataset
