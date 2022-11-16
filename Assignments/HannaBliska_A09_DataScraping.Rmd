@@ -105,13 +105,24 @@ max.withdrawals.mgd
 
 ```{r create.a.dataframe.from.scraped.data}
 #4
+max_withdrawals_df <- data.frame(
+  "Month"=as.factor(rep(1:12)),
+  "Year"=as.factor(rep(2021,12)),
+  "Water System Name"=water.system.name,
+  "PSWID"=pswid,
+  "Ownership"=ownership,
+  "Maximum Daily Withdrawals"=as.numeric(max.withdrawals.mgd))
 
-
+max_withdrawals_df <- max_withdrawals_df %>%
+  mutate(Date = my(paste(Month,"-",Year)))
 
 #5
+max_withdrawals_plot <- 
+  ggplot(max_withdrawals_df, aes(
+    x=Date, y=Maximum.Daily.Withdrawals))+
+  geom_line()
 
-
-
+max_withdrawals_plot
 ```
 
 6. Note that the PWSID and the year appear in the web address for the page we scraped. Construct a function using your code above that can scrape data for any PWSID and year for which the NC DEQ has data. **Be sure to modify the code to reflect the year and site (pwsid) scraped**.
