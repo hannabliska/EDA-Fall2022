@@ -32,6 +32,7 @@ getwd()
 library(tidyverse)
 library(lubridate)
 library(rvest)
+library(scales)
 
 mytheme <- theme_classic(base_size = 12) + theme(
   axis.text = element_text(color="black"), 
@@ -106,7 +107,7 @@ max.withdrawals.mgd
 ```{r create.a.dataframe.from.scraped.data}
 #4
 max_withdrawals_df <- data.frame(
-  "Month"=as.factor(rep(1:12)),
+  "Month"=as.factor(c("Jan", "May", "Sept", "Feb", "Jun","Oct", "Mar", "Jul", "Nov", "Apr", "Aug", "Dec")),
   "Year"=as.factor(rep(2021,12)),
   "Water System Name"=water.system.name,
   "PSWID"=pswid,
@@ -114,14 +115,21 @@ max_withdrawals_df <- data.frame(
   "Maximum Daily Withdrawals"=as.numeric(max.withdrawals.mgd))
 
 max_withdrawals_df <- max_withdrawals_df %>%
-  mutate(Date = my(paste(Month,"-",Year)))
-
+  mutate(Date = my(paste(Month,"-",Year))) %>%
+  arrange(ymd(Date))
+ 
 #5
 max_withdrawals_plot <- 
   ggplot(max_withdrawals_df, aes(
-    x=Date, y=Maximum.Daily.Withdrawals))+
-  geom_line()
-
+    x=Date, y=Maximum.Daily.Withdrawals))+ 
+  geom_line() + #creating line plot
+  scale_x_date(date_breaks="1 month", labels=date_format("%m-%Y")) +
+  #using scale_x_date to make a break for each month in x axis
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  #tilting the angle of the x axis text
+  ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
+  #setting y axis label
+  xlab(expression("Date")) #setting x axis label
 max_withdrawals_plot
 ```
 
