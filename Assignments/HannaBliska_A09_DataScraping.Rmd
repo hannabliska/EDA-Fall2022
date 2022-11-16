@@ -137,7 +137,15 @@ max_withdrawals_plot
 
 ```{r construct.a.scraping.function}
 #6.
-
+scrape.it <- function(the_PWSID, the_year){
+  #retrieve website contents 
+  the_website <- read_html(paste0("https://www.ncwater.org/WUDC/app/LWSP/report.php?",the_pwsid,"&",the_year))
+  
+  #set element address variables
+  
+  
+  
+}
 
 
 ```
@@ -146,7 +154,10 @@ max_withdrawals_plot
 
 ```{r fetch.and.plot.Durham.2015.data}
 #7
+#testing the function
 
+
+#plotting
 
 ```
 
