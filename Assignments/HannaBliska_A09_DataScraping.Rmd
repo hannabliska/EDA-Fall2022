@@ -109,13 +109,13 @@ max.withdrawals.mgd
 max_withdrawals_df <- data.frame(
   "Month"=as.factor(c("Jan", "May", "Sept", "Feb", "Jun","Oct", "Mar", "Jul", "Nov", "Apr", "Aug", "Dec")),
   "Year"=as.factor(rep(2021,12)),
-  "Water System Name"=water.system.name,
-  "PSWID"=pswid,
-  "Ownership"=ownership,
   "Maximum Daily Withdrawals"=as.numeric(max.withdrawals.mgd))
 
 max_withdrawals_df <- max_withdrawals_df %>%
-  mutate(Date = my(paste(Month,"-",Year))) %>%
+  mutate("Water System Name"=!!water.system.name,
+         "PSWID"=!!pswid,
+         "Ownership"=ownership,
+         Date = my(paste(Month,"-",Year))) %>%
   arrange(ymd(Date))
  
 #5
@@ -138,15 +138,31 @@ max_withdrawals_plot
 ```{r construct.a.scraping.function}
 #6.
 scrape.it <- function(the_PWSID, the_year){
-  #retrieve website contents 
-  the_website <- read_html(paste0("https://www.ncwater.org/WUDC/app/LWSP/report.php?",the_pwsid,"&",the_year))
   
-  #set element address variables
+  #retrieve website contents
+  webpage <- read_html(paste0(
+    "https://www.ncwater.org/WUDC/app/LWSP/report.php?",the_PWSID, "&", the_year))
   
+  #setting element address variables
+  the_PWSID_tag <-'td tr:nth-child(1) td:nth-child(5)'
+  the_water_name_tag <- 'div+ table tr:nth-child(1) td:nth-child(2)'
+  the_ownership_tag <- 'div+ table tr:nth-child(2) td:nth-child(4)'
+  the_data_tag <- 'th~ td+ td , th~ td+ td'
   
+  #scraping
+  the_PWSID <- webpage %>% html_nodes(the_PWSID_tag) %>% html_text()
+  the_water_name <- webpage %>% html_nodes(the_water_name_tag) %>% html_text()
+  the_ownership <- webpage %>% html_nodes(the_ownership_tag) %>% html_text()
+  the_daily_withdrawals <- webpage %>% html_nodes(the_data_tag) %>% html_text()
   
+  #data frame
+  scrape_max_withdrawals_df <- max_withdrawals_df %>%
+  mutate("Year" = !!the_year, 
+         "PSWID" =!!the_PWSID)
+         
 }
-
+max_withdrawals_df <- scrape.it("03-32-010", 2021)
+view(max_withdrawals_df)
 
 ```
 
@@ -155,9 +171,22 @@ scrape.it <- function(the_PWSID, the_year){
 ```{r fetch.and.plot.Durham.2015.data}
 #7
 #testing the function
-
+max_withdrawals_df <- scrape.it('03-32-010', 2015)
+view(max_withdrawals_df)
 
 #plotting
+max_withdrawals_2015_plot <- 
+  ggplot(max_withdrawals_df, aes(
+    x=Date, y=Maximum.Daily.Withdrawals))+ 
+  geom_line() + #creating line plot
+  scale_x_date(date_breaks="1 month", labels=date_format("%m-%Y")) +
+  #using scale_x_date to make a break for each month in x axis
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  #tilting the angle of the x axis text
+  ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
+  #setting y axis label
+  xlab(expression("Date")) #setting x axis label
+max_withdrawals_2015_plot
 
 ```
 
