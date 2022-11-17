@@ -229,7 +229,8 @@ ash_durham_2015_plot
 
 ```{r fetch.and.plot.Asheville.multiyear.data}
 #9
-
+the_years 
+ash_2010_2019_df <- map2(the_years, the_PWSID, scrape.it)
 
 ```
 
