@@ -217,7 +217,7 @@ ash_durham_2015_plot <- ggplot() +
   ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
   #setting y axis label
   xlab(expression("Date")) + #setting x axis label
-  labs(colour="City")
+  labs(colour="Water System")
 ash_durham_2015_plot
 
 ```
@@ -229,14 +229,27 @@ ash_durham_2015_plot
 
 ```{r fetch.and.plot.Asheville.multiyear.data}
 #9
-the_years 
-ash_2010_2019_df <- map2(the_years, the_PWSID, scrape.it)
+the_years <- seq(2010,2019)
+  
+ash_2010_2019_df <- map2("01-11-010",the_years,scrape.it) %>%
+  bind_rows()
+
+ash_2010_2019_plot <- ggplot(ash_2010_2019_df, aes(
+    x=Date, y=Maximum.Daily.Withdrawals)) + 
+  geom_line() + #creating line plot
+  geom_smooth(method=loess, color="blue", se=FALSE) +
+  scale_x_date(date_breaks="1 year", labels=date_format("%m-%Y")) +
+  #using scale_x_date to make a break for each month in x axis
+  theme(axis.text.x=element_text(angle=60, hjust=1)) +
+  #tilting the angle of the x axis text
+  ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
+  #setting y axis label
+  xlab(expression("Date")) #setting x axis label
+ash_2010_2019_plot
 
 ```
 
 >Question: Just by looking at the plot (i.e. not running statistics), does Asheville have a trend in water usage over time?
 
-
-
-
+>ANSWER: Yes, it appears that Asheville has an increase in water usage over time. Particularly, after 2017, it appears that water usage has drastically increased in Asheville. 
 
