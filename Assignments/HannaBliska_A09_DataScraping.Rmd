@@ -51,7 +51,9 @@ Indicate this website as the as the URL to be scraped. (In other words, read the
 ```{r set.the.scraping.website}
 #2
 
-webpage <- read_html("https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2021") #fetching contents into webpage object
+webpage <- read_html(
+  "https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2021") 
+#fetching contents into webpage object
 
 webpage #viewing object
 
@@ -107,8 +109,10 @@ max.withdrawals.mgd
 ```{r create.a.dataframe.from.scraped.data}
 #4
 max_withdrawals_df <- data.frame(
-  "Month"=as.factor(c("Jan", "May", "Sept", "Feb", "Jun","Oct", "Mar", "Jul", "Nov", "Apr", "Aug", "Dec")),
-  "Year"=as.factor(rep(2021,12)),
+  "Month"=as.factor(c("Jan", "May", "Sept", "Feb", "Jun",
+                      "Oct", "Mar", "Jul", "Nov", 
+                      "Apr", "Aug", "Dec")), #creating month vector
+  "Year"=as.factor(rep(2021,12)), #repeating 2021 for all 12 values
   "Maximum Daily Withdrawals"=as.numeric(max.withdrawals.mgd))
 
 max_withdrawals_df <- max_withdrawals_df %>%
@@ -116,9 +120,10 @@ max_withdrawals_df <- max_withdrawals_df %>%
          "PSWID"=!!pswid,
          "Ownership"=ownership,
          Date = my(paste(Month,"-",Year))) %>%
-  arrange(ymd(Date))
+  #using mutate to create columns retrieving the scraped variables
+  arrange(ymd(Date)) #arranging in chronological order
 
-view(max_withdrawals_df)
+max_withdrawals_df #viewing data frame
  
 #5
 max_withdrawals_plot <- 
@@ -142,8 +147,9 @@ max_withdrawals_plot
 scrape.it <- function(the_PWSID, the_year){
   
   #retrieve website contents
-  webpage <- read_html(paste0(
-    'https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=',the_PWSID, "&year=", the_year))
+  webpage <-read_html(paste0(
+    'https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=', 
+    the_PWSID, "&year=", the_year))
   
   #setting element address variables
   the_PWSID_tag <-'td tr:nth-child(1) td:nth-child(5)'
@@ -151,14 +157,22 @@ scrape.it <- function(the_PWSID, the_year){
   the_ownership_tag <- 'div+ table tr:nth-child(2) td:nth-child(4)'
   the_data_tag <- 'th~ td+ td , th~ td+ td'
   
-  #scraping
-  the_PWSID <- webpage %>% html_nodes(the_PWSID_tag) %>% html_text()
-  the_water_name <- webpage %>% html_nodes(the_water_name_tag) %>% html_text()
-  the_ownership <- webpage %>% html_nodes(the_ownership_tag) %>% html_text()
-  the_daily_withdrawals <- webpage %>% html_nodes(the_data_tag) %>% html_text()
+  #scraping the data items
+  the_PWSID <- webpage %>% html_nodes(
+    the_PWSID_tag) %>% html_text()
+  the_water_name <- webpage %>% html_nodes(
+    the_water_name_tag) %>% html_text()
+  the_ownership <- webpage %>% html_nodes(
+    the_ownership_tag) %>% html_text()
+  the_daily_withdrawals <- webpage %>% html_nodes(
+    the_data_tag) %>% html_text()
   
-  #data frame
-  scrape_max_withdrawals_df <- data.frame("Month" = as.factor(c("Jan", "May", "Sept", "Feb", "Jun","Oct", "Mar", "Jul", "Nov", "Apr", "Aug", "Dec")),
+  #creating a scraped data frame
+  scrape_max_withdrawals_df <- data.frame(
+    "Month" = as.factor(c("Jan", "May", "Sept",
+                          "Feb", "Jun","Oct", 
+                          "Mar", "Jul", "Nov", 
+                          "Apr", "Aug", "Dec")),
     "Year" = as.factor(rep(the_year,12)),
     "Maximum Daily Withdrawals"=as.numeric(the_daily_withdrawals))
    
@@ -167,10 +181,12 @@ scrape.it <- function(the_PWSID, the_year){
          "Water System Name"=!!the_water_name,
          "Ownership"=!!the_ownership,
          "Date"=my(paste(Month,"-",!!the_year))) %>%
-  arrange(ymd(Date))
+    #using mutate to create columns retrieving the scraped variables
+  arrange(ymd(Date)) #arranging in chronological order
 }
 scrape_max_withdrawals_df <- scrape.it("03-32-010", 2021)
-view(scrape_max_withdrawals_df)
+#scraping for Durham PSWID (03-32-010) and 2021 year
+scrape_max_withdrawals_df #viewing data frame
 
 ```
 
@@ -180,7 +196,8 @@ view(scrape_max_withdrawals_df)
 #7
 #testing the function
 dur2015_scrape_max_withdrawals_df <- scrape.it('03-32-010', 2015)
-view(dur2015_scrape_max_withdrawals_df)
+#scraping for Durham PSWID (03-32-010) and 2015 year
+dur2015_scrape_max_withdrawals_df #viewing data frame
 
 #plotting
 max_withdrawals_2015_plot <- 
@@ -203,13 +220,16 @@ max_withdrawals_2015_plot
 ```{r fetch.and.plot.Asheville.2015.data}
 #8
 ash2015_scrape_max_withdrawals_df <- scrape.it('01-11-010', 2015)
-view(ash2015_scrape_max_withdrawals_df)
+#scraping for Asheville PSWID (01-11-010) and 2015 year
+ash2015_scrape_max_withdrawals_df #viewing data frame
 
 ash_durham_2015_plot <- ggplot() + 
   geom_line(data=dur2015_scrape_max_withdrawals_df, aes(
-    x=Date, y=Maximum.Daily.Withdrawals, color="Durham")) + #creating line plot
+    x=Date, y=Maximum.Daily.Withdrawals, color="Durham")) + 
+  #creating line plot
   geom_line(data=ash2015_scrape_max_withdrawals_df, aes(
-    x=Date, y=Maximum.Daily.Withdrawals, color="Asheville")) + #creating line plot
+    x=Date, y=Maximum.Daily.Withdrawals, color="Asheville")) + 
+  #creating line plot
   scale_x_date(date_breaks="1 month", labels=date_format("%m-%Y")) +
   #using scale_x_date to make a break for each month in x axis
   theme(axis.text.x=element_text(angle=60, hjust=1)) +
@@ -229,10 +249,14 @@ ash_durham_2015_plot
 
 ```{r fetch.and.plot.Asheville.multiyear.data}
 #9
-the_years <- seq(2010,2019)
+the_years <- seq(2010,2019) #creating a sequence of years
   
 ash_2010_2019_df <- map2("01-11-010",the_years,scrape.it) %>%
-  bind_rows()
+  #using map2 to run the function scrape.it with two inputs
+  #two inputs are the PSWID and the years
+  bind_rows() #binding the data frames to a single one
+head(ash_2010_2019_df) #viewing first few rows of the data frame
+tail(ash_2010_2019_df) #viewing last few rows of the data frame
 
 ash_2010_2019_plot <- ggplot(ash_2010_2019_df, aes(
     x=Date, y=Maximum.Daily.Withdrawals)) + 
@@ -251,5 +275,5 @@ ash_2010_2019_plot
 
 >Question: Just by looking at the plot (i.e. not running statistics), does Asheville have a trend in water usage over time?
 
->ANSWER: Yes, it appears that Asheville has an increase in water usage over time. Particularly, after 2017, it appears that water usage has drastically increased in Asheville. 
+>ANSWER: Yes, it appears that Asheville has an increase in water usage over time. Particularly, after 2017, it appears that water usage has drastically increased in Asheville. Before 2017, water usage appeared to be relatively constant.
 
