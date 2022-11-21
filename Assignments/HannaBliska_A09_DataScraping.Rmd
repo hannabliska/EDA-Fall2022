@@ -113,10 +113,10 @@ max_withdrawals_df <- data.frame(
                       "Oct", "Mar", "Jul", "Nov", 
                       "Apr", "Aug", "Dec")), #creating month vector
   "Year"=as.factor(rep(2021,12)), #repeating 2021 for all 12 values
-  "Maximum Daily Withdrawals"=as.numeric(max.withdrawals.mgd))
+  "Maximum.Daily.Withdrawals"=as.numeric(max.withdrawals.mgd))
 
 max_withdrawals_df <- max_withdrawals_df %>%
-  mutate("Water System Name"=!!water.system.name,
+  mutate("Water.System.Name"=!!water.system.name,
          "PSWID"=!!pswid,
          "Ownership"=ownership,
          Date = my(paste(Month,"-",Year))) %>%
@@ -136,7 +136,10 @@ max_withdrawals_plot <-
   #tilting the angle of the x axis text
   ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
   #setting y axis label
-  xlab(expression("Date")) #setting x axis label
+  xlab(expression("Date")) + #setting x axis label
+   ggtitle(expression(
+    "Maximum Daily Withdrawals of Local Water in Durham, NC"), 
+    subtitle="2021") #adding title and subtitle
 max_withdrawals_plot
 ```
 
@@ -174,11 +177,11 @@ scrape.it <- function(the_PWSID, the_year){
                           "Mar", "Jul", "Nov", 
                           "Apr", "Aug", "Dec")),
     "Year" = as.factor(rep(the_year,12)),
-    "Maximum Daily Withdrawals"=as.numeric(the_daily_withdrawals))
+    "Maximum.Daily.Withdrawals"=as.numeric(the_daily_withdrawals))
    
   scrape_max_withdrawals_df <-scrape_max_withdrawals_df %>%
   mutate("PSWID" =!!the_PWSID,
-         "Water System Name"=!!the_water_name,
+         "Water.System.Name"=!!the_water_name,
          "Ownership"=!!the_ownership,
          "Date"=my(paste(Month,"-",!!the_year))) %>%
     #using mutate to create columns retrieving the scraped variables
@@ -210,7 +213,10 @@ max_withdrawals_2015_plot <-
   #tilting the angle of the x axis text
   ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
   #setting y axis label
-  xlab(expression("Date")) #setting x axis label
+  xlab(expression("Date")) + #setting x axis label
+  ggtitle(expression(
+    "Maximum Daily Withdrawals of Local Water in Durham, NC"), 
+    subtitle="2015") #adding title and subtitle
 max_withdrawals_2015_plot
 
 ```
@@ -224,12 +230,13 @@ ash2015_scrape_max_withdrawals_df <- scrape.it('01-11-010', 2015)
 ash2015_scrape_max_withdrawals_df #viewing data frame
 
 ash_durham_2015_plot <- ggplot() + 
-  geom_line(data=dur2015_scrape_max_withdrawals_df, aes(
-    x=Date, y=Maximum.Daily.Withdrawals, color="Durham")) + 
+  geom_line(data=dur2015_scrape_max_withdrawals_df, 
+            aes(
+    x=Date, y=Maximum.Daily.Withdrawals, color="Durham")) +
   #creating line plot
-  geom_line(data=ash2015_scrape_max_withdrawals_df, aes(
-    x=Date, y=Maximum.Daily.Withdrawals, color="Asheville")) + 
-  #creating line plot
+  geom_line(data=ash2015_scrape_max_withdrawals_df, 
+            aes(
+    x=Date, y=Maximum.Daily.Withdrawals, color="Asheville")) +
   scale_x_date(date_breaks="1 month", labels=date_format("%m-%Y")) +
   #using scale_x_date to make a break for each month in x axis
   theme(axis.text.x=element_text(angle=60, hjust=1)) +
@@ -237,7 +244,10 @@ ash_durham_2015_plot <- ggplot() +
   ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
   #setting y axis label
   xlab(expression("Date")) + #setting x axis label
-  labs(colour="Water System")
+  labs(color="Water System Name") + #setting legend title
+  ggtitle(expression(
+    "Maximum Daily Withdrawals of Local Water in Durham and Asheville, NC"), 
+    subtitle="2015") #adding title and subtitle
 ash_durham_2015_plot
 
 ```
@@ -268,7 +278,10 @@ ash_2010_2019_plot <- ggplot(ash_2010_2019_df, aes(
   #tilting the angle of the x axis text
   ylab(expression("Maximum Daily Withdrawals (mgd)")) + 
   #setting y axis label
-  xlab(expression("Date")) #setting x axis label
+  xlab(expression("Date")) + #setting x axis label
+  ggtitle(expression(
+    "Maximum Daily Withdrawals of Local Water in Asheville, NC"), 
+    subtitle="2010-2019") #adding title and subtitle
 ash_2010_2019_plot
 
 ```
